@@ -5,7 +5,7 @@
  * File: api.c
  *
  * MATLAB Coder version            : 5.2
- * C/C++ source code generated on  : 18-Dec-2022 14:05:41
+ * C/C++ source code generated on  : 26-Jan-2023 17:44:44
  */
 
 /* Include Files */
@@ -85,6 +85,7 @@ void api(double setpointX, double setpointY, double newCommand,
          double thetaprev, double *gX_hat, double *gY_hat, double *gTheta_hat,
          double *leftU, double *rightU)
 {
+  double delta_x;
   double delta_y;
   double sDistance;
   double sTheta;
@@ -138,26 +139,23 @@ void api(double setpointX, double setpointY, double newCommand,
   /* xHAt */
   /* setpoint */
   /* Errors */
-  sTheta = setpointX - *gX_hat;
+  delta_x = setpointX - *gX_hat;
   delta_y = setpointY - *gY_hat;
   /* thresholds */
   *distanceDriven += sDistance;
+  /*  angle towards setpoint   */
+  sTheta = (rt_atan2d_snf(delta_y, delta_x) - *gTheta_hat) + 3.1415926535897931;
+  /* modulus function */
+  sTheta -= 6.2831853071795862 * floor(sTheta / 6.2831853071795862);
+  /* smallest signed angle */
   if (*turning != 0.0) {
     /* Rotates robot based on its current position and threshold for rotating */
     /*  delta_x  = x_d - x  */
     /*  delta_y  = y_d - y */
     /*  theta_0 = theta_hat  */
-    /*  angle towards setpoint   */
-    sTheta =
-        (rt_atan2d_snf(delta_y, sTheta) - *gTheta_hat) + 3.1415926535897931;
-    /* modulus function */
-    /* smallest signed angle */
-    sTheta =
-        (sTheta - 6.2831853071795862 * floor(sTheta / 6.2831853071795862)) -
-        3.1415926535897931;
-    if (fabs(sTheta) > 0.087266462599716474) {
+    if (fabs(sTheta - 3.1415926535897931) > 0.087266462599716474) {
       *turning = 1.0;
-      if (sTheta > 0.0) {
+      if (sTheta - 3.1415926535897931 > 0.0) {
         /*  rotate counterclockwise */
         *rightU = 12.0;
         *leftU = -12.0;
@@ -178,10 +176,18 @@ void api(double setpointX, double setpointY, double newCommand,
     /*   distanceDriven [mm] */
     /*   thresholdDR [mm] */
     /*   thresholdDD [mm] */
-    if ((sqrt(sTheta * sTheta + delta_y * delta_y) > 50.0) &&
+    if ((sqrt(delta_x * delta_x + delta_y * delta_y) > 50.0) &&
         (*distanceDriven < 1200.0) && (!(*waitingCommand != 0.0))) {
       uR = 11;
       uL = 10;
+      if (sTheta - 3.1415926535897931 > 0.087266462599716474) {
+        /*  tilt counter clockwise */
+        uR = 12;
+        uL = 9;
+      } else if (sTheta - 3.1415926535897931 < -0.087266462599716474) {
+        /*  tilt clockwise */
+        uR = 10;
+      }
     } else {
       uR = 0;
       uL = 0;

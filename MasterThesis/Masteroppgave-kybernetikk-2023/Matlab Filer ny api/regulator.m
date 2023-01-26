@@ -22,8 +22,7 @@ y_d = setpoint(2);
 %Errors
 delta_x = x_d - x;
 delta_y = y_d - y;
-delta_x
-delta_y
+
 %thresholds
 angleThreshold = deg2rad(5);
 drThreshold      = 50;
@@ -32,16 +31,19 @@ ddThreshold     = 1200;
 
 distanceRemaining    = sqrt(delta_x^2+delta_y^2);
 distanceDriven       = distanceDriven+sDistance;
-distanceDriven
-distanceRemaining
+
+% angle towards setpoint  
+theta_target = atan2(delta_y,delta_x); 
+thetaError = modulus(theta_target-theta_0+pi,2*pi)-pi; %%smallest signed angle
+
 
 if turning
     u = 12;
-    [uL, uR,turning]            = rotateRobot(delta_x,delta_y,theta_0,angleThreshold,u);
+    [uL, uR,turning]            = rotateRobot(thetaError,theta_0,angleThreshold,u);
     distanceDriven = 0;
 else
     u = 10;
-    [uL, uR]                    = moveForward(distanceRemaining,distanceDriven,drThreshold,ddThreshold,u,waitingCommand);
+    [uL, uR]                    = moveForward(thetaError,distanceRemaining,distanceDriven,drThreshold,ddThreshold,u,waitingCommand);
     if (uL == 0) && (uR == 0)
         waitingCommand = 1;
     end

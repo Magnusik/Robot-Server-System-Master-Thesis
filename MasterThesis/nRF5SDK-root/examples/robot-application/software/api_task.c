@@ -75,35 +75,35 @@ void vApiTask(void *arg){
    
   //uncomment for square test
 
-  int squareTestInterval = 20;
-  double xarrayPos[4*squareTestInterval];
-  //memset(xarrayPos,0,sizeof xarrayPos);
-  double yarrayPos[4*squareTestInterval];
-  //memset(yarrayPos,0,sizeof yarrayPos);
+//   int squareTestInterval = 20;
+//   double xarrayPos[4*squareTestInterval];
+//   //memset(xarrayPos,0,sizeof xarrayPos);
+//   double yarrayPos[4*squareTestInterval];
+//   //memset(yarrayPos,0,sizeof yarrayPos);
 
-  double xWaypoint1 = 300;
-  double yWaypoint1 = 0;
+//   double xWaypoint1 = 300;
+//   double yWaypoint1 = 0;
 
-  double xWaypoint2 = 300;
-  double yWaypoint2 = 300;
+//   double xWaypoint2 = 300;
+//   double yWaypoint2 = 300;
   
-  double xWaypoint3 = 0;
-  double yWaypoint3 = 300;
+//   double xWaypoint3 = 0;
+//   double yWaypoint3 = 300;
 
-  double xWaypoint4 = 0;
-  double yWaypoint4 = 0;
+//   double xWaypoint4 = 0;
+//   double yWaypoint4 = 0;
 
-  double xWaypoint  = xWaypoint1;
-  double yWaypoint = yWaypoint1;
+//   double xWaypoint  = xWaypoint1;
+//   double yWaypoint = yWaypoint1;
 
 
 // uncomment for straight line test
 
-// double xWaypoint = 1000;
-// double yWaypoint = 0;
-// int lineTestInterval = 20;
-// double xarrayPos[lineTestInterval];
-// double yarrayPos[lineTestInterval];
+double xWaypoint = 1000;
+double yWaypoint = 0;
+int lineTestInterval = 20;
+double xarrayPos[lineTestInterval];
+double yarrayPos[lineTestInterval];
 
     while (true) {
 
@@ -184,52 +184,54 @@ void vApiTask(void *arg){
 
 
             ////uncomment for square test
-            if (counter==squareTestInterval){
-            xWaypoint=xWaypoint2;
-            yWaypoint=yWaypoint2;
+
+        //     if (counter==squareTestInterval){
+        //     xWaypoint=xWaypoint2;
+        //     yWaypoint=yWaypoint2;
             
-            // gX_hat = xWaypoint1;
-            // gY_hat = yWaypoint1;
-            newCommand=1;
-            }
+        //     // gX_hat = xWaypoint1;
+        //     // gY_hat = yWaypoint1;
+        //     newCommand=1;
+        //     }
 
-            if (counter ==2*squareTestInterval){
-            xWaypoint=xWaypoint3;
-            yWaypoint=yWaypoint3;
+        //     if (counter ==2*squareTestInterval){
+        //     xWaypoint=xWaypoint3;
+        //     yWaypoint=yWaypoint3;
 
-            // gX_hat = xWaypoint2;
-            // gY_hat = yWaypoint2;
-            newCommand=1;
-            }
-            if (counter == 3*squareTestInterval){
-                xWaypoint=xWaypoint4;
-                yWaypoint=yWaypoint4;
+        //     // gX_hat = xWaypoint2;
+        //     // gY_hat = yWaypoint2;
+        //     newCommand=1;
+        //     }
+        //     if (counter == 3*squareTestInterval){
+        //         xWaypoint=xWaypoint4;
+        //         yWaypoint=yWaypoint4;
 
-                // gX_hat = xWaypoint3;
-                // gY_hat = yWaypoint3;
-                newCommand =1;
-            }
+        //         // gX_hat = xWaypoint3;
+        //         // gY_hat = yWaypoint3;
+        //         newCommand =1;
+        //     }
 
-        if (counter==4*squareTestInterval){
-                leftU  = 0;
-                rightU = 0;
-            }
+        // if (counter==4*squareTestInterval){
+        //         leftU  = 0;
+        //         rightU = 0;
+        //     }
 
-        if(counter == 300){
-            int i;
-            for(i = 0; i<4*squareTestInterval; ++i){
-                    printf("\r\n%f %f\n\r",(float)xarrayPos[i],(float)yarrayPos[i]);
-                    vTaskDelay(10);
-            }
-        }
-
-        //uncomment for linetest
-        // if(counter == 150){
+        // if(counter == 300){
         //     int i;
-        //     for(i = 0; i<lineTestInterval; ++i){
+        //     for(i = 0; i<4*squareTestInterval; ++i){
         //             printf("\r\n%f %f\n\r",(float)xarrayPos[i],(float)yarrayPos[i]);
         //             vTaskDelay(10);
+        //     }
         // }
+
+        //uncomment for linetest
+        if(counter == 150){
+            int i;
+            for(i = 0; i<lineTestInterval; ++i){
+                    printf("\r\n%f %f\n\r",(float)xarrayPos[i],(float)yarrayPos[i]);
+                    vTaskDelay(10);
+        }
+        }
         }
 
         //collision logic
@@ -246,17 +248,20 @@ void vApiTask(void *arg){
             xprev     = gX_hat;
             yprev     = gY_hat;
             thetaprev = gTheta_hat;
+
             // uncomment for square test
-            if (counter<4*squareTestInterval){
-            xarrayPos[counter-1] = xprev;
-            yarrayPos[counter-1] = yprev;
-            }
+
+            // if (counter<4*squareTestInterval){
+            // xarrayPos[counter-1] = xprev;
+            // yarrayPos[counter-1] = yprev;
+            // }
 
             //uncomment for line test
-            // if (counter<lineTestInterval){
-            //     xarrayPos[counter-1] = xprev;
-            //     yarrayPos[counter-1] = yprev;
-            // }
+
+            if (counter<lineTestInterval){
+                xarrayPos[counter-1] = xprev;
+                yarrayPos[counter-1] = yprev;
+            }
 
 
             uL = (int)leftU;

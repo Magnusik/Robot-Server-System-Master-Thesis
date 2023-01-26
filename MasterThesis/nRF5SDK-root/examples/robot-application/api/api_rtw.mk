@@ -2,7 +2,7 @@
 ## Makefile generated for component 'api'. 
 ## 
 ## Makefile     : api_rtw.mk
-## Generated on : Wed Nov 02 09:27:04 2022
+## Generated on : Thu Jan 26 16:07:08 2023
 ## Final product: .\api.lib
 ## Product type : static-library
 ## 
@@ -24,7 +24,7 @@ MAKEFILE                  = api_rtw.mk
 MATLAB_ROOT               = C:\PROGRA~1\MATLAB\R2021a
 MATLAB_BIN                = C:\PROGRA~1\MATLAB\R2021a\bin
 MATLAB_ARCH_BIN           = $(MATLAB_BIN)\win64
-START_DIR                 = C:\Users\magnusik\Desktop\PROSJE~2\MATLAB~1\codegen\lib\api
+START_DIR                 = C:\Users\magnusik\Desktop\ROBOT-~1\MASTER~1\MASTER~1\MATLAB~1\codegen\lib\api
 TGT_FCN_LIB               = ISO_C
 SOLVER_OBJ                = 
 CLASSIC_INTERFACE         = 0
@@ -316,11 +316,11 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS)
 	$(CPP) $(CPPFLAGS) -Fo"$@" "$<"
 
 
-{C:\Users\magnusik\Desktop\PROSJE~2\MATLAB~1}.c.obj :
+{C:\Users\magnusik\Desktop\ROBOT-~1\MASTER~1\MASTER~1\MATLAB~1}.c.obj :
 	$(CC) $(CFLAGS) -Fo"$@" "$<"
 
 
-{C:\Users\magnusik\Desktop\PROSJE~2\MATLAB~1}.cpp.obj :
+{C:\Users\magnusik\Desktop\ROBOT-~1\MASTER~1\MASTER~1\MATLAB~1}.cpp.obj :
 	$(CPP) $(CPPFLAGS) -Fo"$@" "$<"
 
 
