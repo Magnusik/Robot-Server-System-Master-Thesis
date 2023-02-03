@@ -5,7 +5,7 @@
  * File: _coder_api_api.c
  *
  * MATLAB Coder version            : 5.2
- * C/C++ source code generated on  : 26-Jan-2023 17:44:44
+ * C/C++ source code generated on  : 03-Feb-2023 11:06:07
  */
 
 /* Include Files */
@@ -107,12 +107,12 @@ static const mxArray *emlrt_marshallOut(const real_T u)
 }
 
 /*
- * Arguments    : const mxArray * const prhs[11]
+ * Arguments    : const mxArray * const prhs[13]
  *                int32_T nlhs
  *                const mxArray *plhs[8]
  * Return Type  : void
  */
-void api_api(const mxArray *const prhs[11], int32_T nlhs,
+void api_api(const mxArray *const prhs[13], int32_T nlhs,
              const mxArray *plhs[8])
 {
   emlrtStack st = {
@@ -120,6 +120,8 @@ void api_api(const mxArray *const prhs[11], int32_T nlhs,
       NULL, /* tls */
       NULL  /* prev */
   };
+  real_T ddInitX;
+  real_T ddInitY;
   real_T distanceDriven;
   real_T gTheta_hat;
   real_T gX_hat;
@@ -151,10 +153,12 @@ void api_api(const mxArray *const prhs[11], int32_T nlhs,
   xprev = emlrt_marshallIn(&st, emlrtAliasP(prhs[8]), "xprev");
   yprev = emlrt_marshallIn(&st, emlrtAliasP(prhs[9]), "yprev");
   thetaprev = emlrt_marshallIn(&st, emlrtAliasP(prhs[10]), "thetaprev");
+  ddInitX = emlrt_marshallIn(&st, emlrtAliasP(prhs[11]), "ddInitX");
+  ddInitY = emlrt_marshallIn(&st, emlrtAliasP(prhs[12]), "ddInitY");
   /* Invoke the target function */
   api(setpointX, setpointY, newCommand, &waitingCommand, ticksLeft, ticksRight,
-      &distanceDriven, &turning, xprev, yprev, thetaprev, &gX_hat, &gY_hat,
-      &gTheta_hat, &leftU, &rightU);
+      &distanceDriven, &turning, xprev, yprev, thetaprev, ddInitX, ddInitY,
+      &gX_hat, &gY_hat, &gTheta_hat, &leftU, &rightU);
   /* Marshall function outputs */
   plhs[0] = emlrt_marshallOut(gX_hat);
   if (nlhs > 1) {

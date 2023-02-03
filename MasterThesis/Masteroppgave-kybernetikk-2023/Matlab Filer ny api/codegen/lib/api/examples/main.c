@@ -5,7 +5,7 @@
  * File: main.c
  *
  * MATLAB Coder version            : 5.2
- * C/C++ source code generated on  : 26-Jan-2023 17:44:44
+ * C/C++ source code generated on  : 03-Feb-2023 11:06:07
  */
 
 /*************************************************************************/
@@ -77,8 +77,8 @@ static void main_api(void)
   waitingCommand = setpointX_tmp;
   api(setpointX_tmp, setpointX_tmp, setpointX_tmp, &waitingCommand,
       setpointX_tmp, setpointX_tmp, &distanceDriven, &turning, setpointX_tmp,
-      setpointX_tmp, setpointX_tmp, &gX_hat, &gY_hat, &gTheta_hat, &leftU,
-      &rightU);
+      setpointX_tmp, setpointX_tmp, setpointX_tmp, setpointX_tmp, &gX_hat,
+      &gY_hat, &gTheta_hat, &leftU, &rightU);
 }
 
 /*

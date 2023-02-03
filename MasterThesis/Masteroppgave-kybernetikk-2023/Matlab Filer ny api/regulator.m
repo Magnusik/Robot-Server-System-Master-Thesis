@@ -1,4 +1,4 @@
-function [uL,uR,distanceDriven,turning,waitingCommand] = regulator(xHat,setpoint,turning,sDistance,distanceDriven,waitingCommand)
+function [uL,uR,distanceDriven,turning,waitingCommand] = regulator(xHat,setpoint,turning,sDistance,distanceDriven,ddInit,waitingCommand)
 %Returns the inputs to the Left and Right motors
 % xHat = [x_hat, y_hat, theta_hat] ~ [mm,mm,rad]
 % setpoint = [x_d, y_d] ~ [mm,mm]
@@ -25,8 +25,10 @@ delta_y = y_d - y;
 
 %thresholds
 angleThreshold = deg2rad(5);
+
+maxDistanceTarget =sqrt( (x_d-ddInit(1))^2 + (y_d-ddInit(2))^2 ); 
 drThreshold      = 50;
-ddThreshold     = 1200;
+ddThreshold     = maxDistanceTarget;
 
 
 distanceRemaining    = sqrt(delta_x^2+delta_y^2);
@@ -42,7 +44,7 @@ if turning
     [uL, uR,turning]            = rotateRobot(thetaError,theta_0,angleThreshold,u);
     distanceDriven = 0;
 else
-    u = 10;
+    u = 12;
     [uL, uR]                    = moveForward(thetaError,distanceRemaining,distanceDriven,drThreshold,ddThreshold,u,waitingCommand);
     if (uL == 0) && (uR == 0)
         waitingCommand = 1;

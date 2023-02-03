@@ -11,9 +11,9 @@
     turning = 1;
     
     %%input arguments
-    setpointX = 10;
-    setpointY = 10;
-    newCommand = 0;
+    setpointX = 1000;
+    setpointY = 1000;
+    newCommand = 1;
     ticksRight = 100;
     ticksLeft = 100;
     xprev = 10;
@@ -21,9 +21,11 @@
     thetaprev =0;
     distanceDriven =0;
     waitingCommand =0;
+    ddInitX =0;
+    ddInitY=0;
 
 
 
 
 [gX_hat,gY_hat,gTheta_hat,distanceDriven,leftU,rightU,turning,waitingCommand] = ...
-    api(setpointX,setpointY,newCommand,waitingCommand,ticksLeft,ticksRight,distanceDriven,turning,xprev,yprev,thetaprev);
+    api(setpointX,setpointY,newCommand,waitingCommand,ticksLeft,ticksRight,distanceDriven,turning,xprev,yprev,thetaprev,ddInitX,ddInitY);

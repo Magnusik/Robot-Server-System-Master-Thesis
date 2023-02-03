@@ -71,6 +71,8 @@ void vApiTask(void *arg){
   double thetaprev = 0;
   double distanceDriven =0;
   double waitingCommand =0;
+  double ddInitX = 0;
+  double ddInitY = 0;
   gTheta_hat = thetaprev;
    
   //uncomment for square test
@@ -140,7 +142,7 @@ double yarrayPos[lineTestInterval];
             // printf("\r\n Setpoint: x %f y %f \n\r",(float)Setpoint.x, (float)Setpoint.y);
             // printf("\r\n New Setpoint Command %d \n\r", new_setpoint_command);
 
-            //distance driven between setpoint commands
+            //Distance Driven between setpoint commands
             //printf("\r\n Distance driven : %f \n\r",(float)distanceDriven);
             // printf("\r\n waitingcommand : %f \n\r",(float)waitingCommand);
             // printf("\r\n turning: %f \n\r",(float)turning);
@@ -173,12 +175,13 @@ double yarrayPos[lineTestInterval];
             setpointY = yWaypoint;
             waitingCommand = 0;
             newCommand = 0;
-                    
+            ddInitX = gX_hat;
+            ddInitY = gY_hat;  
             }
             //vTaskDelay(100);
             api(setpointX, setpointY,newCommand,&waitingCommand,
          ticks_Left_preHandshake,ticks_Right_preHandshake,&distanceDriven, &turning,
-         xprev,yprev, thetaprev,&gX_hat,
+         xprev,yprev, thetaprev,ddInitX,ddInitY,&gX_hat,
          &gY_hat,&gTheta_hat, &leftU,
          &rightU);
 

@@ -5,7 +5,7 @@
  * File: _coder_api_mex.c
  *
  * MATLAB Coder version            : 5.2
- * C/C++ source code generated on  : 26-Jan-2023 17:44:44
+ * C/C++ source code generated on  : 03-Feb-2023 11:06:07
  */
 
 /* Include Files */
@@ -47,11 +47,11 @@ emlrtCTX mexFunctionCreateRootTLS(void)
  * Arguments    : int32_T nlhs
  *                mxArray *plhs[8]
  *                int32_T nrhs
- *                const mxArray *prhs[11]
+ *                const mxArray *prhs[13]
  * Return Type  : void
  */
 void unsafe_api_mexFunction(int32_T nlhs, mxArray *plhs[8], int32_T nrhs,
-                            const mxArray *prhs[11])
+                            const mxArray *prhs[13])
 {
   emlrtStack st = {
       NULL, /* site */
@@ -62,8 +62,8 @@ void unsafe_api_mexFunction(int32_T nlhs, mxArray *plhs[8], int32_T nrhs,
   int32_T b_nlhs;
   st.tls = emlrtRootTLSGlobal;
   /* Check for proper number of arguments. */
-  if (nrhs != 11) {
-    emlrtErrMsgIdAndTxt(&st, "EMLRT:runTime:WrongNumberOfInputs", 5, 12, 11, 4,
+  if (nrhs != 13) {
+    emlrtErrMsgIdAndTxt(&st, "EMLRT:runTime:WrongNumberOfInputs", 5, 12, 13, 4,
                         3, "api");
   }
   if (nlhs > 8) {

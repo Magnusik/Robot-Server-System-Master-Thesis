@@ -5,7 +5,7 @@
  * File: api.h
  *
  * MATLAB Coder version            : 5.2
- * C/C++ source code generated on  : 26-Jan-2023 17:44:44
+ * C/C++ source code generated on  : 03-Feb-2023 11:06:07
  */
 
 #ifndef API_H
@@ -24,8 +24,9 @@ extern "C" {
 extern void api(double setpointX, double setpointY, double newCommand,
                 double *waitingCommand, double ticksLeft, double ticksRight,
                 double *distanceDriven, double *turning, double xprev,
-                double yprev, double thetaprev, double *gX_hat, double *gY_hat,
-                double *gTheta_hat, double *leftU, double *rightU);
+                double yprev, double thetaprev, double ddInitX, double ddInitY,
+                double *gX_hat, double *gY_hat, double *gTheta_hat,
+                double *leftU, double *rightU);
 
 #ifdef __cplusplus
 }

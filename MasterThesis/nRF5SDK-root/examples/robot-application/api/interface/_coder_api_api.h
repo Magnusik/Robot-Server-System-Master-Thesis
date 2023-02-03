@@ -5,7 +5,7 @@
  * File: _coder_api_api.h
  *
  * MATLAB Coder version            : 5.2
- * C/C++ source code generated on  : 26-Jan-2023 17:44:44
+ * C/C++ source code generated on  : 03-Feb-2023 11:06:07
  */
 
 #ifndef _CODER_API_API_H
@@ -28,10 +28,10 @@ extern "C" {
 void api(real_T setpointX, real_T setpointY, real_T newCommand,
          real_T *waitingCommand, real_T ticksLeft, real_T ticksRight,
          real_T *distanceDriven, real_T *turning, real_T xprev, real_T yprev,
-         real_T thetaprev, real_T *gX_hat, real_T *gY_hat, real_T *gTheta_hat,
-         real_T *leftU, real_T *rightU);
+         real_T thetaprev, real_T ddInitX, real_T ddInitY, real_T *gX_hat,
+         real_T *gY_hat, real_T *gTheta_hat, real_T *leftU, real_T *rightU);
 
-void api_api(const mxArray *const prhs[11], int32_T nlhs,
+void api_api(const mxArray *const prhs[13], int32_T nlhs,
              const mxArray *plhs[8]);
 
 void api_atexit(void);

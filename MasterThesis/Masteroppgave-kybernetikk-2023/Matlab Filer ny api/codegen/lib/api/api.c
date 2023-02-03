@@ -5,7 +5,7 @@
  * File: api.c
  *
  * MATLAB Coder version            : 5.2
- * C/C++ source code generated on  : 26-Jan-2023 17:44:44
+ * C/C++ source code generated on  : 03-Feb-2023 11:06:07
  */
 
 /* Include Files */
@@ -72,6 +72,8 @@ static double rt_atan2d_snf(double u0, double u1)
  *                double xprev
  *                double yprev
  *                double thetaprev
+ *                double ddInitX
+ *                double ddInitY
  *                double *gX_hat
  *                double *gY_hat
  *                double *gTheta_hat
@@ -82,9 +84,11 @@ static double rt_atan2d_snf(double u0, double u1)
 void api(double setpointX, double setpointY, double newCommand,
          double *waitingCommand, double ticksLeft, double ticksRight,
          double *distanceDriven, double *turning, double xprev, double yprev,
-         double thetaprev, double *gX_hat, double *gY_hat, double *gTheta_hat,
-         double *leftU, double *rightU)
+         double thetaprev, double ddInitX, double ddInitY, double *gX_hat,
+         double *gY_hat, double *gTheta_hat, double *leftU, double *rightU)
 {
+  double a;
+  double b_a;
   double delta_x;
   double delta_y;
   double sDistance;
@@ -142,6 +146,8 @@ void api(double setpointX, double setpointY, double newCommand,
   delta_x = setpointX - *gX_hat;
   delta_y = setpointY - *gY_hat;
   /* thresholds */
+  a = setpointX - ddInitX;
+  b_a = setpointY - ddInitY;
   *distanceDriven += sDistance;
   /*  angle towards setpoint   */
   sTheta = (rt_atan2d_snf(delta_y, delta_x) - *gTheta_hat) + 3.1415926535897931;
@@ -177,16 +183,17 @@ void api(double setpointX, double setpointY, double newCommand,
     /*   thresholdDR [mm] */
     /*   thresholdDD [mm] */
     if ((sqrt(delta_x * delta_x + delta_y * delta_y) > 50.0) &&
-        (*distanceDriven < 1200.0) && (!(*waitingCommand != 0.0))) {
-      uR = 11;
-      uL = 10;
+        (*distanceDriven < sqrt(a * a + b_a * b_a)) &&
+        (!(*waitingCommand != 0.0))) {
+      uR = 13;
+      uL = 12;
       if (sTheta - 3.1415926535897931 > 0.087266462599716474) {
         /*  tilt counter clockwise */
-        uR = 12;
-        uL = 9;
+        uR = 14;
+        uL = 11;
       } else if (sTheta - 3.1415926535897931 < -0.087266462599716474) {
         /*  tilt clockwise */
-        uR = 10;
+        uR = 12;
       }
     } else {
       uR = 0;
