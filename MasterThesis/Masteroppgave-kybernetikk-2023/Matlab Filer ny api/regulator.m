@@ -44,7 +44,12 @@ if turning
     [uL, uR,turning]            = rotateRobot(thetaError,theta_0,angleThreshold,u);
     distanceDriven = 0;
 else
-    u = 12;
+    
+    u = 18;
+    if distanceRemaining<200 %%slow down when close to target
+        u = 10;
+    end
+    
     [uL, uR]                    = moveForward(thetaError,distanceRemaining,distanceDriven,drThreshold,ddThreshold,u,waitingCommand);
     if (uL == 0) && (uR == 0)
         waitingCommand = 1;

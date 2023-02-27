@@ -20,6 +20,9 @@
 
 #include "motor.h"
 
+#define Square 1
+#define Line 2
+#define noTest 0
 
 void vApiTask(void *arg){
     vServo_setAngle(0);
@@ -35,31 +38,15 @@ void vApiTask(void *arg){
     // double gRight = 0.0;
     double leftU = 0.0;
     double rightU = 0.0;
-    // double ticks_Left = 0;
-    // double ticks_Right = 0;
+    double ticks_Left = 0;
+    double ticks_Right = 0;
     uint8_t robotMovement = moveStop;
-    
-    // double setpoint_x_temp = 0;
-    // double setpoint_y_temp = 0;
-    // bool new_setpoint_command = false;
-    // double xHatInit = 0;
-    // double yHatInit = 0;
-    // double thetaHatInit = 0;
-    // float total_ticks_r=0;
-    // float total_ticks_l=0;
     
     //prehandshake
     double ticks_Left_preHandshake      = 0;
     double ticks_Right_preHandshake     = 0;
     double total_ticks_r_preHandshake   = 0;
     double total_ticks_l_preHandshake   = 0;
-
-    //encoder testing
-    int counter = 0;
-    int uL = 0;
-    int uR = 0;
-    bool debug = true;
-
 
     //new api
   double turning=1;
@@ -74,42 +61,70 @@ void vApiTask(void *arg){
   double ddInitX = 0;
   double ddInitY = 0;
   gTheta_hat = thetaprev;
-   
-  //uncomment for square test
 
-//   int squareTestInterval = 20;
-//   double xarrayPos[4*squareTestInterval];
-//   //memset(xarrayPos,0,sizeof xarrayPos);
-//   double yarrayPos[4*squareTestInterval];
-//   //memset(yarrayPos,0,sizeof yarrayPos);
+  //init test parameters
+  int counter = 0;
+  int uL = 0;
+  int uR = 0;
+  bool debug = true;
+  int testType = noTest;
 
-//   double xWaypoint1 = 300;
-//   double yWaypoint1 = 0;
 
-//   double xWaypoint2 = 300;
-//   double yWaypoint2 = 300;
+  int squareTestInterval;
+  double xWaypoint1;
+  double yWaypoint1;
+  double xWaypoint2;
+  double yWaypoint2;
+  double xWaypoint3;
+  double yWaypoint3;
+  double xWaypoint4;
+  double yWaypoint4;
+  double xarrayPos[100];
+  double yarrayPos[100];
+
+  int lineTestInterval;
+  double xWaypoint;
+  double yWaypoint;
+
+  //Run square test
+    if (testType==Square){
+  squareTestInterval = 20;
+  double xarrayPos[4*squareTestInterval];
+  double yarrayPos[4*squareTestInterval];
+
+  xWaypoint1 = 300;
+  yWaypoint1 = 0;
+
+  xWaypoint2 = 300;
+  yWaypoint2 = 300;
   
-//   double xWaypoint3 = 0;
-//   double yWaypoint3 = 300;
+  xWaypoint3 = 0;
+  yWaypoint3 = 300;
 
-//   double xWaypoint4 = 0;
-//   double yWaypoint4 = 0;
+  xWaypoint4 = 0;
+  yWaypoint4 = 0;
 
-//   double xWaypoint  = xWaypoint1;
-//   double yWaypoint = yWaypoint1;
+  xWaypoint  = xWaypoint1;
+  yWaypoint = yWaypoint1;
+    }
 
-
-// uncomment for straight line test
-
-double xWaypoint = 1000;
-double yWaypoint = 0;
-int lineTestInterval = 20;
+// run straight line test
+if (testType==Line){
+xWaypoint = 1000;
+yWaypoint = 0;
+lineTestInterval = 20;
 double xarrayPos[lineTestInterval];
 double yarrayPos[lineTestInterval];
+}
 
+if (testType==noTest){
+    double xWaypoint=0;
+    double yWaypoint=0;
+}
     while (true) {
 
         vTaskDelay(200);
+        taskYIELD();
         //TickType_t ticks_since_startup_prev = ticks_since_startup;
         // double X_hat = gX_hat;
         // double Y_hat = gY_hat;
@@ -161,6 +176,7 @@ double yarrayPos[lineTestInterval];
 
 
         if(!gHandshook){
+            //printf("\r\n Testing before handshake block\n\r");
             counter +=1;
             encoderTicks Ticks_preHandshake = encoder_get_ticks_since_last_time();
             ticks_Left_preHandshake = -(double)Ticks_preHandshake.left;
@@ -186,48 +202,43 @@ double yarrayPos[lineTestInterval];
          &rightU);
 
 
-            ////uncomment for square test
-
-        //     if (counter==squareTestInterval){
-        //     xWaypoint=xWaypoint2;
-        //     yWaypoint=yWaypoint2;
+            //uncomment for square test
+            if (testType==Square){
+            if (counter==squareTestInterval){
+            xWaypoint=xWaypoint2;
+            yWaypoint=yWaypoint2;
             
-        //     // gX_hat = xWaypoint1;
-        //     // gY_hat = yWaypoint1;
-        //     newCommand=1;
-        //     }
+            newCommand=1;
+            }
 
-        //     if (counter ==2*squareTestInterval){
-        //     xWaypoint=xWaypoint3;
-        //     yWaypoint=yWaypoint3;
+            if (counter ==2*squareTestInterval){
+            xWaypoint=xWaypoint3;
+            yWaypoint=yWaypoint3;
+            newCommand=1;
+            }
+            if (counter == 3*squareTestInterval){
+                xWaypoint=xWaypoint4;
+                yWaypoint=yWaypoint4;
+                newCommand =1;
+            }
 
-        //     // gX_hat = xWaypoint2;
-        //     // gY_hat = yWaypoint2;
-        //     newCommand=1;
-        //     }
-        //     if (counter == 3*squareTestInterval){
-        //         xWaypoint=xWaypoint4;
-        //         yWaypoint=yWaypoint4;
+        if (counter==4*squareTestInterval){
+                leftU  = 0;
+                rightU = 0;
+            }
 
-        //         // gX_hat = xWaypoint3;
-        //         // gY_hat = yWaypoint3;
-        //         newCommand =1;
-        //     }
+        if(counter == 300){
+            int i;
+            for(i = 0; i<4*squareTestInterval; ++i){
+                    printf("\r\n%f %f\n\r",(float)xarrayPos[i],(float)yarrayPos[i]);
+                    vTaskDelay(10);
+            }
+        }
 
-        // if (counter==4*squareTestInterval){
-        //         leftU  = 0;
-        //         rightU = 0;
-        //     }
+        }
 
-        // if(counter == 300){
-        //     int i;
-        //     for(i = 0; i<4*squareTestInterval; ++i){
-        //             printf("\r\n%f %f\n\r",(float)xarrayPos[i],(float)yarrayPos[i]);
-        //             vTaskDelay(10);
-        //     }
-        // }
-
-        //uncomment for linetest
+        //run line test
+        if(testType==Line){
         if(counter == 150){
             int i;
             for(i = 0; i<lineTestInterval; ++i){
@@ -235,6 +246,8 @@ double yarrayPos[lineTestInterval];
                     vTaskDelay(10);
         }
         }
+        }
+
         }
 
         //collision logic
@@ -252,108 +265,64 @@ double yarrayPos[lineTestInterval];
             yprev     = gY_hat;
             thetaprev = gTheta_hat;
 
-            // uncomment for square test
+            // Log square test
+            if (testType==Square){
+            if (counter<4*squareTestInterval){
+            xarrayPos[counter-1] = xprev;
+            yarrayPos[counter-1] = yprev;
+            }
 
-            // if (counter<4*squareTestInterval){
-            // xarrayPos[counter-1] = xprev;
-            // yarrayPos[counter-1] = yprev;
-            // }
+            }
 
-            //uncomment for line test
-
+            // Log  line test
+            if (testType==Line){
             if (counter<lineTestInterval){
                 xarrayPos[counter-1] = xprev;
                 yarrayPos[counter-1] = yprev;
             }
-
+            }
 
             uL = (int)leftU;
             uR = (int)rightU;
 
             vMotorMovementSwitch(uL,uR);
-            //taskYIELD();
+            taskYIELD();
             
-            
-            // Encoder test sequence  
-            // if (counter<10){
-            //     uL = 15;
-            //     uR = 15;
-            //     robotMovement = moveForward;
-            //     vMotorMovementSwitch(uL,uR);
-            //     printf("\r\nTicks Left: %f Ticks Right: %f\n\r",(float)ticks_Left_preHandshake,(float)ticks_Right_preHandshake);
-            // }
-            // else if (counter>9 && counter<15){
-            //     if (counter==10){
-                
-                
-            //     printf("\r\n total ticks R: %f \n\r",total_ticks_r_preHandshake);
-            //     printf("\r\n total ticks L:  %f \n\r",total_ticks_l_preHandshake);
-            //     }
-            //     uL = -15;
-            //     uR = 15;
-            //     robotMovement = moveForward;
-            //     vMotorMovementSwitch(uL,uR);
-            //     printf("\r\nTicks Left: %f Ticks Right: %f\n\r",(float)ticks_Left_preHandshake,(float)ticks_Right_preHandshake);
-
-            // }
-
-            // else{
-            //     if (counter==15){
-            //     printf("\r\n Total ticks R: %f \n\r",total_ticks_r_preHandshake);
-            //     printf("\r\n Total ticks L:  %f \n\r",total_ticks_l_preHandshake);
-            //     }
-            //     uL = 0;
-            //     uR = 0;
-            //     robotMovement = moveStop;
-            //     vMotorMovementSwitch(uL,uR);
-            //     motor_brake();
-            // }
             
         }        
 
 
         if (gHandshook) {
-            // setpoint_x_temp = (double)Setpoint.x;  
-            // setpoint_y_temp = (double)Setpoint.y;
+            printf("\r\n Testing handshake block\n\r");
+            encoderTicks Ticks = encoder_get_ticks_since_last_time();
+            ticks_Left = -(double)Ticks.left;
+            ticks_Right = -(double)Ticks.right;
             if (xQueueReceive(poseControllerQ, &Setpoint, 0) == pdTRUE) {
             NRF_LOG_INFO("\n\nNew setpoint: X = "NRF_LOG_FLOAT_MARKER", Y = "NRF_LOG_FLOAT_MARKER"\n\n",NRF_LOG_FLOAT(Setpoint.x), NRF_LOG_FLOAT(Setpoint.y));
+            printf("\r\n Testing queue block\n\r");
+            newCommand=true;
             }
-            
-        //     api(setpointX, setpointY,newCommand,&waitingCommand,
-        //  ticks_Left_preHandshake,ticks_Right_preHandshake,&distanceDriven, &turning,
-        //  xprev,yprev, thetaprev,&gX_hat,
-        //  &gY_hat,&gTheta_hat, &leftU,
-        //  &rightU);
 
-            // if ((double)Setpoint.x != setpoint_x_temp || (double)Setpoint.y != setpoint_y_temp){ // remember if the command is new
-            //     new_setpoint_command = true;
-            //     xHatInit = gX_hat;
-            //     yHatInit = gY_hat;
-            //     thetaHatInit = gTheta_hat;
-            //     printf("\r\nnew command received\n\r");
-            // }
-            // else{
-            //     new_setpoint_command = false;
-            // }
+            if (newCommand){
+            turning = 1;
+            setpointX = Setpoint.x*10;
+            setpointY = Setpoint.y*10;
+            waitingCommand = 0;
+            newCommand = 0;
+            ddInitX = gX_hat;
+            ddInitY = gY_hat;  
+            }
+        
+        api(setpointX, setpointY,newCommand,&waitingCommand,
+         ticks_Left,ticks_Right,&distanceDriven, &turning,
+         xprev,yprev, thetaprev,ddInitX,ddInitY,&gX_hat,
+         &gY_hat,&gTheta_hat, &leftU,
+         &rightU);
 
-
-            //vTaskDelay(100);
-            taskYIELD();
-            //printf("%f",(float)Setpoint.x);
-            //printf("%f",(float)gyro_x);
-
-            //update encoder values
-            // encoderTicks Ticks = encoder_get_ticks_since_last_time();
-            // ticks_Left = -(double)Ticks.left;
-            // ticks_Right = -(double)Ticks.right;
-
-            
-            // total_ticks_r = total_ticks_r+(float)(ticks_Right);
-            // total_ticks_l = total_ticks_l+(float)(ticks_Left);
-
-
-            // Matlab generated C code
-            
+        // temp values of global states
+            xprev     = gX_hat;
+            yprev     = gY_hat;
+            thetaprev = gTheta_hat;
 
 
             if (debug){
@@ -380,8 +349,6 @@ double yarrayPos[lineTestInterval];
             // printf("\r\n accelX: %f accelY: %f accelZ: %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
             
 
-            rightU = 0;
-            leftU = 0;
             }
 
 
@@ -398,11 +365,6 @@ double yarrayPos[lineTestInterval];
             set_position_estimate_x(gX_hat/1000); // convert from mm to m
             set_position_estimate_y(gY_hat/1000); // convert from mm to m
             xSemaphoreGive(xPoseMutex);
-
-            if (gTheta_hat != 0) {
-                // NRF_LOG_INFO("\n\ntheta estimate:"NRF_LOG_FLOAT_MARKER"\n\n",NRF_LOG_FLOAT(gTheta_hat));
-            } 
-            // NRF_LOG_INFO("estimates[mm] X, Y = %d, %d",gX_hat,gY_hat);
             
             
             if (checkForCollision() == true){ 

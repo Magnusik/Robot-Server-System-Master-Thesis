@@ -5,7 +5,7 @@
  * File: api.c
  *
  * MATLAB Coder version            : 5.2
- * C/C++ source code generated on  : 03-Feb-2023 11:06:07
+ * C/C++ source code generated on  : 03-Feb-2023 11:38:27
  */
 
 /* Include Files */
@@ -89,11 +89,11 @@ void api(double setpointX, double setpointY, double newCommand,
 {
   double a;
   double b_a;
-  double delta_x;
   double delta_y;
+  double distanceRemaining;
   double sDistance;
   double sTheta;
-  int uL;
+  int u;
   int uR;
   (void)newCommand;
   /*  Calculation of current position and orientation [x_hat, y_hat, theta_hat],
@@ -143,14 +143,15 @@ void api(double setpointX, double setpointY, double newCommand,
   /* xHAt */
   /* setpoint */
   /* Errors */
-  delta_x = setpointX - *gX_hat;
+  sTheta = setpointX - *gX_hat;
   delta_y = setpointY - *gY_hat;
   /* thresholds */
   a = setpointX - ddInitX;
   b_a = setpointY - ddInitY;
+  distanceRemaining = sqrt(sTheta * sTheta + delta_y * delta_y);
   *distanceDriven += sDistance;
   /*  angle towards setpoint   */
-  sTheta = (rt_atan2d_snf(delta_y, delta_x) - *gTheta_hat) + 3.1415926535897931;
+  sTheta = (rt_atan2d_snf(delta_y, sTheta) - *gTheta_hat) + 3.1415926535897931;
   /* modulus function */
   sTheta -= 6.2831853071795862 * floor(sTheta / 6.2831853071795862);
   /* smallest signed angle */
@@ -177,31 +178,35 @@ void api(double setpointX, double setpointY, double newCommand,
     }
     *distanceDriven = 0.0;
   } else {
+    u = 18;
+    if (distanceRemaining < 200.0) {
+      /* slow down when close to target */
+      u = 10;
+    }
     /* Moves the robot Forward if thresholds are met */
     /*   distanceRemaining [mm] */
     /*   distanceDriven [mm] */
     /*   thresholdDR [mm] */
     /*   thresholdDD [mm] */
-    if ((sqrt(delta_x * delta_x + delta_y * delta_y) > 50.0) &&
+    if ((distanceRemaining > 50.0) &&
         (*distanceDriven < sqrt(a * a + b_a * b_a)) &&
         (!(*waitingCommand != 0.0))) {
-      uR = 13;
-      uL = 12;
+      uR = u + 1;
       if (sTheta - 3.1415926535897931 > 0.087266462599716474) {
         /*  tilt counter clockwise */
-        uR = 14;
-        uL = 11;
+        uR = u + 2;
+        u--;
       } else if (sTheta - 3.1415926535897931 < -0.087266462599716474) {
         /*  tilt clockwise */
-        uR = 12;
+        uR = u;
       }
     } else {
       uR = 0;
-      uL = 0;
+      u = 0;
     }
-    *leftU = uL;
+    *leftU = u;
     *rightU = uR;
-    if ((uL == 0) && (uR == 0)) {
+    if ((u == 0) && (uR == 0)) {
       *waitingCommand = 1.0;
     }
   }

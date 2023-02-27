@@ -69,6 +69,7 @@ void vMainCommunicationTask(void *pvParameters){
 				command_in = message_in;
 				//taskEXIT_CRITICAL();
 				//xTaskResumeAll ();      // Enable context switching
+				printf("\r\n something %d %d \n\r",command_in.type,command_in.type);
 				switch (command_in.type) 
 				{
 				case TYPE_CONFIRM:
@@ -86,6 +87,7 @@ void vMainCommunicationTask(void *pvParameters){
 				
 				case TYPE_ORDER:
 					NRF_LOG_INFO("MESSAGE WAS: TYPE_ORDER x: %d,Y:%d",command_in.message.order.x,command_in.message.order.y);
+					//printf("\r\n something %d %d \n\r",command_in.message.order.x,command_in.message.order.y);
 					Setpoint.x = command_in.message.order.x;
 					Setpoint.y = command_in.message.order.y;
 					/* Relay new coordinates to position controller */
