@@ -1,7 +1,7 @@
 <deployment-project plugin="plugin.coder" plugin-version="R2021a">
-  <configuration build-checksum="1298726051" file="C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\api.prj" location="C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api" name="api" target="target.unifiedcoder" target-name="MATLAB Coder">
+  <configuration build-checksum="508151256" file="C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\api.prj" location="C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api" name="api" target="target.unifiedcoder" target-name="MATLAB Coder">
     <profile key="profile.mex">
-      <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
+      <param.BuiltInstrumentedMex />
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
       <param.WorkingFolder>option.WorkingFolder.Project</param.WorkingFolder>
       <param.SpecifiedWorkingFolder />
@@ -38,7 +38,7 @@
       <param.DefaultTestFile />
       <param.MergeInstrumentationResults>false</param.MergeInstrumentationResults>
       <param.VerificationMode>option.VerificationMode.None</param.VerificationMode>
-      <param.VerificationStatus>option.VerificationStatus.Passed</param.VerificationStatus>
+      <param.VerificationStatus>option.VerificationStatus.Inactive</param.VerificationStatus>
       <param.EnableMexProfiling>false</param.EnableMexProfiling>
       <var.BuiltWithMexProfiling>false</var.BuiltWithMexProfiling>
       <param.CustomSourceCode />
@@ -69,7 +69,7 @@
       <param.EnableCRICodeCoverage>true</param.EnableCRICodeCoverage>
       <param.EnableAutoParallelizationReporting>true</param.EnableAutoParallelizationReporting>
       <param.EnableJIT>false</param.EnableJIT>
-      <param.EnableJITSilentBailOut>false</param.EnableJITSilentBailOut>
+      <param.EnableJITSilentBailOut />
       <param.CheckForIssuesJIT>true</param.CheckForIssuesJIT>
       <param.EnableGitSupport>false</param.EnableGitSupport>
       <param.EnableAutoCommit>false</param.EnableAutoCommit>
@@ -112,6 +112,7 @@
         <param.DefaultTestFile />
         <param.MergeInstrumentationResults />
         <param.VerificationMode />
+        <param.VerificationStatus />
         <param.EnableMexProfiling />
         <var.BuiltWithMexProfiling />
         <param.CustomSourceCode />
@@ -889,7 +890,7 @@
     <param.AutoInferUnboundedSizeThreshold>2048</param.AutoInferUnboundedSizeThreshold>
     <param.EnableFixedPointStep>false</param.EnableFixedPointStep>
     <param.EnableScreener>true</param.EnableScreener>
-    <param.AnnotationChecksum>2858105839</param.AnnotationChecksum>
+    <param.AnnotationChecksum>3426000583</param.AnnotationChecksum>
     <var.LegacyTarget />
     <var.MirrorOnOpen>false</var.MirrorOnOpen>
     <param.FixedPointEnabled>false</param.FixedPointEnabled>
@@ -898,12 +899,11 @@
     <param.unifiedParamStorage />
     <var.gc.lastOutputRoot>codegen\lib\api</var.gc.lastOutputRoot>
     <var.gc.lastOutputType>C_CODE</var.gc.lastOutputType>
-    <var.gc.preBuildChecksum>1890623355</var.gc.preBuildChecksum>
-    <var.cfi.lastOutputRoot>codegen\mex\api</var.cfi.lastOutputRoot>
-    <var.cfi.preBuildChecksum>870422849</var.cfi.preBuildChecksum>
-    <var.lastCfiTestSnippet>test_newApi</var.lastCfiTestSnippet>
+    <var.gc.preBuildChecksum>2530485530</var.gc.preBuildChecksum>
+    <var.cfi.lastOutputRoot />
+    <var.cfi.preBuildChecksum />
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
-    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\api.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\estimator.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\modulus.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\moveForward.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\regulator.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\rotateRobot.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;1651695226&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
+    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\api.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\estimator.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\modulus.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\moveForward.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\regulator.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\rotateRobot.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;3275908976&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
     <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\api.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\estimator.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\modulus.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\moveForward.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\regulator.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\Matlab Filer ny api\rotateRobot.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
     <param.forceMexBuild>false</param.forceMexBuild>
     <param.NoDefaultJIT>false</param.NoDefaultJIT>
@@ -1027,6 +1027,8 @@
       <var.redirectedInputTypeData />
       <var.DismissScreener />
       <param.unifiedParamStorage />
+      <var.cfi.lastOutputRoot />
+      <var.cfi.preBuildChecksum />
       <var.outdatedOnRestore />
       <param.forceMexBuild />
       <param.NoDefaultJIT />
@@ -1124,7 +1126,7 @@
     </unset>
     <fileset.entrypoints>
       <file custom-data-expanded="false" value="${PROJECT_ROOT}\api.m">
-        <Marker>1675420692911</Marker>
+        <Marker>1677498223907</Marker>
       </file>
     </fileset.entrypoints>
     <fileset.testbench>

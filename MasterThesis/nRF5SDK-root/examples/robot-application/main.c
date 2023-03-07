@@ -61,7 +61,7 @@
 #include "DisplayTask.h"
 //#include "MPU6050.h"
 #include "defines.h"
-#include "/software/globals.h"
+#include "software/globals.h"
 #include "encoder.h"
 // #include "encoder_with_counter.h"
 #include "i2c.h"

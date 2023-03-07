@@ -5,7 +5,7 @@
  * File: api.c
  *
  * MATLAB Coder version            : 5.2
- * C/C++ source code generated on  : 03-Feb-2023 11:38:27
+ * C/C++ source code generated on  : 27-Feb-2023 12:43:57
  */
 
 /* Include Files */
@@ -93,8 +93,6 @@ void api(double setpointX, double setpointY, double newCommand,
   double distanceRemaining;
   double sDistance;
   double sTheta;
-  int u;
-  int uR;
   (void)newCommand;
   /*  Calculation of current position and orientation [x_hat, y_hat, theta_hat],
    * and distance moved during this sample */
@@ -178,11 +176,8 @@ void api(double setpointX, double setpointY, double newCommand,
     }
     *distanceDriven = 0.0;
   } else {
-    u = 18;
-    if (distanceRemaining < 200.0) {
-      /* slow down when close to target */
-      u = 10;
-    }
+    *leftU = fmin(18.0, floor(distanceRemaining / 100.0 + 10.0));
+    /* Input slows down depending on distance towards target */
     /* Moves the robot Forward if thresholds are met */
     /*   distanceRemaining [mm] */
     /*   distanceDriven [mm] */
@@ -191,22 +186,20 @@ void api(double setpointX, double setpointY, double newCommand,
     if ((distanceRemaining > 50.0) &&
         (*distanceDriven < sqrt(a * a + b_a * b_a)) &&
         (!(*waitingCommand != 0.0))) {
-      uR = u + 1;
+      *rightU = *leftU + 1.0;
       if (sTheta - 3.1415926535897931 > 0.087266462599716474) {
         /*  tilt counter clockwise */
-        uR = u + 2;
-        u--;
+        *rightU = *leftU + 2.0;
+        (*leftU)--;
       } else if (sTheta - 3.1415926535897931 < -0.087266462599716474) {
         /*  tilt clockwise */
-        uR = u;
+        *rightU = *leftU;
       }
     } else {
-      uR = 0;
-      u = 0;
+      *rightU = 0.0;
+      *leftU = 0.0;
     }
-    *leftU = u;
-    *rightU = uR;
-    if ((u == 0) && (uR == 0)) {
+    if ((*leftU == 0.0) && (*rightU == 0.0)) {
       *waitingCommand = 1.0;
     }
   }

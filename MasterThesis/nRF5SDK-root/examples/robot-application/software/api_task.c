@@ -67,7 +67,8 @@ void vApiTask(void *arg){
   int uL = 0;
   int uR = 0;
   bool debug = true;
-  int testType = noTest;
+  int testType = Line;
+  bool log = false;
 
 
   int squareTestInterval;
@@ -227,7 +228,7 @@ if (testType==noTest){
                 rightU = 0;
             }
 
-        if(counter == 300){
+        if(counter == 300 && log == true){
             int i;
             for(i = 0; i<4*squareTestInterval; ++i){
                     printf("\r\n%f %f\n\r",(float)xarrayPos[i],(float)yarrayPos[i]);
@@ -238,7 +239,7 @@ if (testType==noTest){
         }
 
         //run line test
-        if(testType==Line){
+        if(testType==Line && log == true){
         if(counter == 150){
             int i;
             for(i = 0; i<lineTestInterval; ++i){
@@ -266,7 +267,7 @@ if (testType==noTest){
             thetaprev = gTheta_hat;
 
             // Log square test
-            if (testType==Square){
+            if (testType==Square && log == true){
             if (counter<4*squareTestInterval){
             xarrayPos[counter-1] = xprev;
             yarrayPos[counter-1] = yprev;
@@ -275,8 +276,8 @@ if (testType==noTest){
             }
 
             // Log  line test
-            if (testType==Line){
-            if (counter<lineTestInterval){
+            if (testType==Line && log == true){
+            if (counter<=lineTestInterval){
                 xarrayPos[counter-1] = xprev;
                 yarrayPos[counter-1] = yprev;
             }

@@ -45,10 +45,7 @@ if turning
     distanceDriven = 0;
 else
     
-    u = 18;
-    if distanceRemaining<200 %%slow down when close to target
-        u = 10;
-    end
+    u = min(18,floor(10+distanceRemaining/100)); %Input slows down depending on distance remaining to target
     
     [uL, uR]                    = moveForward(thetaError,distanceRemaining,distanceDriven,drThreshold,ddThreshold,u,waitingCommand);
     if (uL == 0) && (uR == 0)
