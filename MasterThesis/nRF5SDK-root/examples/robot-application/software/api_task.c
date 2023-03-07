@@ -23,6 +23,8 @@
 #define Square 1
 #define Line 2
 #define noTest 0
+#define COMPLETE 0
+#define GYRO_MIN 0.25
 
 void vApiTask(void *arg){
     vServo_setAngle(0);
@@ -62,12 +64,23 @@ void vApiTask(void *arg){
   double ddInitY = 0;
   gTheta_hat = thetaprev;
 
+  bool calibration = 1;
+  TickType_t ticks_since_startup = xTaskGetTickCount();
+  double offsetGyroX = 0;
+  double offsetGyroY = 0;
+  double offsetGyroZ = 0;
+  double testAngle =0;
+  double delta_theta =0;
+  double sample_diff_gyro_z =0;
+  double gyro_z_prev=0;
+  
+
   //init test parameters
   int counter = 0;
   int uL = 0;
   int uR = 0;
   bool debug = true;
-  int testType = Line;
+  int testType = noTest;
   bool log = false;
 
 
@@ -126,22 +139,41 @@ if (testType==noTest){
 
         vTaskDelay(200);
         taskYIELD();
-        //TickType_t ticks_since_startup_prev = ticks_since_startup;
+        TickType_t ticks_since_startup_prev = ticks_since_startup;
+        ticks_since_startup = xTaskGetTickCount();
+		float delta_t = (ticks_since_startup - ticks_since_startup_prev)*1.0 / configTICK_RATE_HZ;
         // double X_hat = gX_hat;
         // double Y_hat = gY_hat;
         // double Theta_hat = gTheta_hat;
 
         //Read IMU data iff Kalman is enabled
-        //IMU_reading_t gyro;
+        IMU_reading_t gyro;
         // IMU_reading_t accel;
-        // IMU_read();
-        //gyro = IMU_getGyro();
-        // accel = IMU_getAccel();
+        IMU_read();
+        gyro = IMU_getGyro();
+        double gyro_x = gyro.x-offsetGyroX; 
+        double gyro_y = gyro.y-offsetGyroY; 
+        double gyro_z = gyro.z-offsetGyroZ;
+        if (calibration){
+            
+            vTaskDelay(400);
+            IMU_read();
+            gyro = IMU_getGyro();
+            offsetGyroX = gyro.x;
+            offsetGyroY = gyro.y;
+            offsetGyroZ = gyro.z;
+            calibration = COMPLETE;
+            
+        }
 
-        // double gyro_x = gyro.x; 
-        // double gyro_y = gyro.y; 
-        // double gyro_z = gyro.z; 
-        // double accel_x = accel.x;
+        delta_theta = gyro_z*delta_t;
+        if(!calibration && IMU_new_data() && (gyro_z>GYRO_MIN || gyro_z<-GYRO_MIN )){
+            testAngle=testAngle+delta_theta;
+        }
+        
+        gyro_z_prev =gyro_z;
+        //double accel_x = accel.x;
+        // accel = IMU_getAccel();
         // double accel_y = accel.y; 
         // double accel_z = accel.z;
 
@@ -169,7 +201,8 @@ if (testType==noTest){
             //printf("\r\n gXhat: %f gYhat: %f gTheta: %f\n\r",gX_hat,(float)gY_hat,(float)radToDeg*gTheta_hat);
             
             //GYRO VALUES
-            //printf("\r\n gyroX: %f gyroY: %f gyroZ: %f\n\r",(float)gyro_x,(float)gyro_y,(float)gyro_z);
+            printf("\r\n gyroX: %f gyroY: %f gyroZ: %f\n\r",(float)gyro_x,(float)gyro_y,(float)gyro_z);
+            printf("\r\n test angle: %f\n\r",(float)testAngle);
             //printf("\r\n%f %f %f\n\r",(float)gyro_x,(float)gyro_y,(float)gyro_z);
             //printf("\r\n%f %f %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
             //printf("\r\n accelX: %f accelY: %f accelZ: %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
@@ -196,7 +229,7 @@ if (testType==noTest){
             ddInitY = gY_hat;  
             }
             //vTaskDelay(100);
-            api(setpointX, setpointY,newCommand,&waitingCommand,
+            controllerApi(setpointX, setpointY,newCommand,&waitingCommand,
          ticks_Left_preHandshake,ticks_Right_preHandshake,&distanceDriven, &turning,
          xprev,yprev, thetaprev,ddInitX,ddInitY,&gX_hat,
          &gY_hat,&gTheta_hat, &leftU,
@@ -314,7 +347,7 @@ if (testType==noTest){
             ddInitY = gY_hat;  
             }
         
-        api(setpointX, setpointY,newCommand,&waitingCommand,
+        controllerApi(setpointX, setpointY,newCommand,&waitingCommand,
          ticks_Left,ticks_Right,&distanceDriven, &turning,
          xprev,yprev, thetaprev,ddInitX,ddInitY,&gX_hat,
          &gY_hat,&gTheta_hat, &leftU,

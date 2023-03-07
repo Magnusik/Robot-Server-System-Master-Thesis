@@ -1,5 +1,6 @@
-_build/nrf52840_xxaa/rt_nonfinite.c.o: api/rt_nonfinite.c \
- api/rt_nonfinite.h api/rtwtypes.h motor_gen/tmwtypes.h \
+_build/nrf52840_xxaa/rt_nonfinite.c.o: controllerApi/rt_nonfinite.c \
+ controllerApi/rt_nonfinite.h controllerApi/rtwtypes.h \
+ motor_gen/tmwtypes.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include-fixed\limits.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include-fixed\syslimits.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\limits.h \
@@ -21,9 +22,9 @@ _build/nrf52840_xxaa/rt_nonfinite.c.o: api/rt_nonfinite.c \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\lock.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\_ansi.h
 
-api/rt_nonfinite.h:
+controllerApi/rt_nonfinite.h:
 
-api/rtwtypes.h:
+controllerApi/rtwtypes.h:
 
 motor_gen/tmwtypes.h:
 

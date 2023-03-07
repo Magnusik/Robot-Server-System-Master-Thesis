@@ -159,13 +159,13 @@ SRC_FILES += \
   $(PROJ_DIR)/test_functions/SensorTowerTester.c \
   $(PROJ_DIR)/test_functions/DebugFunctions.c \
   $(PROJ_DIR)/motor_gen/motor_gen.c \
-  $(PROJ_DIR)/api/api.c \
-  $(PROJ_DIR)/api/api_data.c \
-  $(PROJ_DIR)/api/api_initialize.c \
-  $(PROJ_DIR)/api/api_terminate.c \
-  $(PROJ_DIR)/api/rt_nonfinite.c \
-  $(PROJ_DIR)/api/rtGetInf.c \
-  $(PROJ_DIR)/api/rtGetNaN.c \
+  $(PROJ_DIR)/controllerApi/controllerApi.c \
+  $(PROJ_DIR)/controllerApi/controllerApi_data.c \
+  $(PROJ_DIR)/controllerApi/controllerApi_initialize.c \
+  $(PROJ_DIR)/controllerApi/controllerApi_terminate.c \
+  $(PROJ_DIR)/controllerApi/rt_nonfinite.c \
+  $(PROJ_DIR)/controllerApi/rtGetInf.c \
+  $(PROJ_DIR)/controllerApi/rtGetNaN.c \
   $(PROJ_DIR)/software/api_task.c \
 # Include folders common to all targets
 INC_FOLDERS += \
