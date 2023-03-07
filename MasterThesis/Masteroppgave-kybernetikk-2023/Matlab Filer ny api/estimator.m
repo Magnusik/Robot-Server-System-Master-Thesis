@@ -1,4 +1,4 @@
-function [xHat, sDistance] = estimator(Encoder,prev,turning)
+function [xHat, sDistance] = estimator(Encoder,prev,turning,sThetaGyro)
 % Calculation of current position and orientation [x_hat, y_hat, theta_hat], and distance moved during this sample
 %   Detailed explanation goes here
 
@@ -28,7 +28,7 @@ sTheta              = (distanceTicks/oneRevWheelBase)*2*pi;
 if turning
     x = prev(1);
     y = prev(2);
-    theta = prev(3)+sTheta;
+    theta = prev(3)+deg2rad(sThetaGyro);
     sDistance = 0;
 else
     x = prev(1) + sDistance*cos(prev(3));

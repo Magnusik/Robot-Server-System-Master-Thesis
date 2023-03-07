@@ -69,8 +69,8 @@ void vApiTask(void *arg){
   double offsetGyroX = 0;
   double offsetGyroY = 0;
   double offsetGyroZ = 0;
-  double testAngle =0;
-  double delta_theta =0;
+  double gyroAngleZ =0;
+  double delta_theta_gyro =0;
   double sample_diff_gyro_z =0;
   double gyro_z_prev=0;
   
@@ -166,9 +166,9 @@ if (testType==noTest){
             
         }
 
-        delta_theta = gyro_z*delta_t;
+        delta_theta_gyro = gyro_z*delta_t;
         if(!calibration && IMU_new_data() && (gyro_z>GYRO_MIN || gyro_z<-GYRO_MIN )){
-            testAngle=testAngle+delta_theta;
+            gyroAngleZ=gyroAngleZ+delta_theta_gyro;
         }
         
         gyro_z_prev =gyro_z;
@@ -202,7 +202,7 @@ if (testType==noTest){
             
             //GYRO VALUES
             printf("\r\n gyroX: %f gyroY: %f gyroZ: %f\n\r",(float)gyro_x,(float)gyro_y,(float)gyro_z);
-            printf("\r\n test angle: %f\n\r",(float)testAngle);
+            printf("\r\n test angle: %f\n\r",(float)gyroAngleZ);
             //printf("\r\n%f %f %f\n\r",(float)gyro_x,(float)gyro_y,(float)gyro_z);
             //printf("\r\n%f %f %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
             //printf("\r\n accelX: %f accelY: %f accelZ: %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
@@ -231,10 +231,10 @@ if (testType==noTest){
             //vTaskDelay(100);
             controllerApi(setpointX, setpointY,newCommand,&waitingCommand,
          ticks_Left_preHandshake,ticks_Right_preHandshake,&distanceDriven, &turning,
-         xprev,yprev, thetaprev,ddInitX,ddInitY,&gX_hat,
+         xprev,yprev, thetaprev,ddInitX,ddInitY,delta_theta_gyro,&gX_hat,
          &gY_hat,&gTheta_hat, &leftU,
          &rightU);
-
+            turning =1;
 
             //uncomment for square test
             if (testType==Square){
@@ -349,7 +349,7 @@ if (testType==noTest){
         
         controllerApi(setpointX, setpointY,newCommand,&waitingCommand,
          ticks_Left,ticks_Right,&distanceDriven, &turning,
-         xprev,yprev, thetaprev,ddInitX,ddInitY,&gX_hat,
+         xprev,yprev, thetaprev,ddInitX,ddInitY,delta_theta_gyro,&gX_hat,
          &gY_hat,&gTheta_hat, &leftU,
          &rightU);
 
