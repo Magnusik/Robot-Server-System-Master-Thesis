@@ -2,4 +2,5 @@ SSNAR - cart/dist/
 SSNAR - cart/nbproject/private/
 SSNAR - cart/
 MasterThesis/Masteroppgave-Kybernetikk-2023/MatlabFiler/codegen
-MasterThesis\nRF5SDK-root\examples\robot-application\_build/
+.o
+.d
