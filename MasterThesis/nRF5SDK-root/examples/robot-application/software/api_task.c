@@ -80,7 +80,7 @@ void vApiTask(void *arg){
   int uL = 0;
   int uR = 0;
   bool debug = true;
-  int testType = noTest;
+  int testType = Square;
   bool log = false;
 
 
@@ -234,7 +234,7 @@ if (testType==noTest){
          xprev,yprev, thetaprev,ddInitX,ddInitY,delta_theta_gyro,&gX_hat,
          &gY_hat,&gTheta_hat, &leftU,
          &rightU);
-            turning =1;
+            
 
             //uncomment for square test
             if (testType==Square){
@@ -271,7 +271,7 @@ if (testType==noTest){
 
         }
 
-        //run line test
+        //run line test log
         if(testType==Line && log == true){
         if(counter == 150){
             int i;
