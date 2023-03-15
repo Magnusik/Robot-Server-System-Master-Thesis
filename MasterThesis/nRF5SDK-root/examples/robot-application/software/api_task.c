@@ -20,24 +20,68 @@
 
 #include "motor.h"
 
-#define Square 1
-#define Line 2
-#define noTest 0
+
+
+
+
+
+
+
+void vApiTask(void *arg){
+
+//Constants
 #define COMPLETE 0
 #define GYRO_MIN 0.25
 
-void vApiTask(void *arg){
+//MACRO variables
+#define SQUARE 1
+#define LINE 2
+#define NO_TEST 0
+
+//MACROs for running different sequences
+#define DEBUG 1
+#define LOG 0
+#define TEST_TYPE LINE
+
+// SQUARE test parameters
+#if (TEST_TYPE==SQUARE) 
+    int squareTestInterval = 20;
+    double xarrayPos[4*squareTestInterval];
+    double yarrayPos[4*squareTestInterval];
+    double xWaypoint1 = 300;
+    double yWaypoint1 = 0;
+    double xWaypoint2 = 300;
+    double yWaypoint2 = 300;
+    double xWaypoint3 = 0;
+    double yWaypoint3 = 300;
+    double xWaypoint4 = 0;
+    double yWaypoint4 = 0;
+
+    double xWaypoint  = xWaypoint1;
+    double yWaypoint = yWaypoint1;
+#endif
+
+// run straight line test
+#if (TEST_TYPE==LINE)
+    double xWaypoint = 1000;
+    double yWaypoint = 0;
+    int lineTestInterval = 20;
+    double xarrayPos[lineTestInterval];
+    double yarrayPos[lineTestInterval];
+#endif
+
+#if (TEST_TYPE==NO_TEST)
+    double xWaypoint=0;
+    double yWaypoint=0;
+#endif
+
+
     vServo_setAngle(0);
 
     struct sCartesian Setpoint = {0, 0};
-    // int16_t x_coordinates[2] = {10, 10}; //, 5, 0};
-    // int16_t y_coordinates[2] = {0, 0};//, 0, 0};
-
     double gX_hat = 0.0;
     double gY_hat = 0.0;
     double gTheta_hat = 0.0;
-    // double gLeft = 0.0;
-    // double gRight = 0.0;
     double leftU = 0.0;
     double rightU = 0.0;
     double ticks_Left = 0;
@@ -51,90 +95,35 @@ void vApiTask(void *arg){
     double total_ticks_l_preHandshake   = 0;
 
     //new api
-  double turning=1;
-  double setpointX = 0;
-  double setpointY = 0;
-  double newCommand = 1;
-  double xprev = 0;
-  double yprev = 0;
-  double thetaprev = 0;
-  double distanceDriven =0;
-  double waitingCommand =0;
-  double ddInitX = 0;
-  double ddInitY = 0;
-  gTheta_hat = thetaprev;
+    double turning=1;
+    double setpointX = 0;
+    double setpointY = 0;
+    double newCommand = 1;
+    double xprev = 0;
+    double yprev = 0;
+    double thetaprev = 0;
+    double distanceDriven =0;
+    double waitingCommand =0;
+    double ddInitX = 0;
+    double ddInitY = 0;
+    gTheta_hat = thetaprev;
 
-  bool calibration = 1;
-  TickType_t ticks_since_startup = xTaskGetTickCount();
-  double offsetGyroX = 0;
-  double offsetGyroY = 0;
-  double offsetGyroZ = 0;
-  double gyroAngleZ =0;
-  double delta_theta_gyro =0;
-  double sample_diff_gyro_z =0;
-  double gyro_z_prev=0;
-  
-
-  //init test parameters
-  int counter = 0;
-  int uL = 0;
-  int uR = 0;
-  bool debug = true;
-  int testType = Square;
-  bool log = false;
+    bool calibration = 1;
+    TickType_t ticks_since_startup = xTaskGetTickCount();
+    double offsetGyroX = 0;
+    double offsetGyroY = 0;
+    double offsetGyroZ = 0;
+    double gyroAngleZ =0;
+    double delta_theta_gyro =0;
+    double sample_diff_gyro_z =0;
+    double gyro_z_prev=0;
 
 
-  int squareTestInterval;
-  double xWaypoint1;
-  double yWaypoint1;
-  double xWaypoint2;
-  double yWaypoint2;
-  double xWaypoint3;
-  double yWaypoint3;
-  double xWaypoint4;
-  double yWaypoint4;
-  double xarrayPos[100];
-  double yarrayPos[100];
+    //init test parameters
+    int counter = 0;
+    int uL = 0;
+    int uR = 0;
 
-  int lineTestInterval;
-  double xWaypoint;
-  double yWaypoint;
-
-  //Run square test
-    if (testType==Square){
-  squareTestInterval = 20;
-  double xarrayPos[4*squareTestInterval];
-  double yarrayPos[4*squareTestInterval];
-
-  xWaypoint1 = 300;
-  yWaypoint1 = 0;
-
-  xWaypoint2 = 300;
-  yWaypoint2 = 300;
-  
-  xWaypoint3 = 0;
-  yWaypoint3 = 300;
-
-  xWaypoint4 = 0;
-  yWaypoint4 = 0;
-
-  xWaypoint  = xWaypoint1;
-  yWaypoint = yWaypoint1;
-    }
-
-// run straight line test
-if (testType==Line){
-xWaypoint = 1000;
-yWaypoint = 0;
-lineTestInterval = 20;
-double xarrayPos[lineTestInterval];
-double yarrayPos[lineTestInterval];
-}
-
-if (testType==noTest){
-    double xWaypoint=0;
-    double yWaypoint=0;
-}
     while (true) {
 
         vTaskDelay(200);
@@ -154,16 +143,15 @@ if (testType==noTest){
         double gyro_x = gyro.x-offsetGyroX; 
         double gyro_y = gyro.y-offsetGyroY; 
         double gyro_z = gyro.z-offsetGyroZ;
+
         if (calibration){
-            
             vTaskDelay(400);
             IMU_read();
             gyro = IMU_getGyro();
             offsetGyroX = gyro.x;
             offsetGyroY = gyro.y;
             offsetGyroZ = gyro.z;
-            calibration = COMPLETE;
-            
+            calibration = COMPLETE; 
         }
 
         delta_theta_gyro = gyro_z*delta_t;
@@ -177,7 +165,7 @@ if (testType==noTest){
         // double accel_y = accel.y; 
         // double accel_z = accel.z;
 
-            if (debug){
+        if (DEBUG){
             //TICKS
             //printf("\r\nTicks Left: %f Ticks Right: %f\n\r",(float)ticks_Left_preHandshake,(float)ticks_Right_preHandshake);
             //printf("\r\n total ticks R: %f \n\r",total_ticks_r_preHandshake);
@@ -206,7 +194,7 @@ if (testType==noTest){
             //printf("\r\n%f %f %f\n\r",(float)gyro_x,(float)gyro_y,(float)gyro_z);
             //printf("\r\n%f %f %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
             //printf("\r\n accelX: %f accelY: %f accelZ: %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
-            }
+        }
 
 
         if(!gHandshook){
@@ -236,51 +224,54 @@ if (testType==noTest){
          &rightU);
             
 
-            //uncomment for square test
-            if (testType==Square){
-            if (counter==squareTestInterval){
-            xWaypoint=xWaypoint2;
-            yWaypoint=yWaypoint2;
-            
-            newCommand=1;
-            }
+            //SQUARE test MACRO
+            #if (TEST_TYPE==SQUARE)
+            {
+                if (counter==squareTestInterval){
+                    xWaypoint=xWaypoint2;
+                    yWaypoint=yWaypoint2;
+                    
+                    newCommand=1;
+                }
 
-            if (counter ==2*squareTestInterval){
-            xWaypoint=xWaypoint3;
-            yWaypoint=yWaypoint3;
-            newCommand=1;
-            }
-            if (counter == 3*squareTestInterval){
-                xWaypoint=xWaypoint4;
-                yWaypoint=yWaypoint4;
-                newCommand =1;
-            }
+                if (counter ==2*squareTestInterval){
+                xWaypoint=xWaypoint3;
+                yWaypoint=yWaypoint3;
+                newCommand=1;
+                }
+                if (counter == 3*squareTestInterval){
+                    xWaypoint=xWaypoint4;
+                    yWaypoint=yWaypoint4;
+                    newCommand =1;
+                }
 
-        if (counter==4*squareTestInterval){
-                leftU  = 0;
-                rightU = 0;
-            }
+                if (counter==4*squareTestInterval){
+                        leftU  = 0;
+                        rightU = 0;
+                    }
 
-        if(counter == 300 && log == true){
-            int i;
-            for(i = 0; i<4*squareTestInterval; ++i){
-                    printf("\r\n%f %f\n\r",(float)xarrayPos[i],(float)yarrayPos[i]);
-                    vTaskDelay(10);
+                if(counter == 300 && LOG){
+                    int i;
+                    for(i = 0; i<4*squareTestInterval; ++i){
+                            printf("\r\n%f %f\n\r",(float)xarrayPos[i],(float)yarrayPos[i]);
+                            vTaskDelay(10);
+                    }
+                }
+            }
+            #endif
+
+        //LINE test LOG MACRO
+        #if(TEST_TYPE==LINE && LOG)
+        {
+            if(counter == 150){
+                int i;
+                for(i = 0; i<lineTestInterval; ++i){
+                        printf("\r\n%f %f\n\r",(float)xarrayPos[i],(float)yarrayPos[i]);
+                        vTaskDelay(10);
             }
         }
-
         }
-
-        //run line test log
-        if(testType==Line && log == true){
-        if(counter == 150){
-            int i;
-            for(i = 0; i<lineTestInterval; ++i){
-                    printf("\r\n%f %f\n\r",(float)xarrayPos[i],(float)yarrayPos[i]);
-                    vTaskDelay(10);
-        }
-        }
-        }
+        #endif
 
         }
 
@@ -295,33 +286,35 @@ if (testType==noTest){
         //     }
         
         // temp values of global states
-            xprev     = gX_hat;
-            yprev     = gY_hat;
-            thetaprev = gTheta_hat;
+        xprev     = gX_hat;
+        yprev     = gY_hat;
+        thetaprev = gTheta_hat;
 
-            // Log square test
-            if (testType==Square && log == true){
+        // SQUARE test LOG MACRO
+        #if (TEST==SQUARE && LOG)
+        {
             if (counter<4*squareTestInterval){
-            xarrayPos[counter-1] = xprev;
-            yarrayPos[counter-1] = yprev;
+                xarrayPos[counter-1] = xprev;
+                yarrayPos[counter-1] = yprev;
             }
+        }
+        #endif
 
-            }
-
-            // Log  line test
-            if (testType==Line && log == true){
+        // LINE test LOG MACRO
+        #if (TEST_TYPE==LINE && LOG)
+        {
             if (counter<=lineTestInterval){
                 xarrayPos[counter-1] = xprev;
                 yarrayPos[counter-1] = yprev;
             }
-            }
+        }
+        #endif
 
-            uL = (int)leftU;
-            uR = (int)rightU;
+        uL = (int)leftU;
+        uR = (int)rightU;
 
-            vMotorMovementSwitch(uL,uR);
-            taskYIELD();
-            
+        vMotorMovementSwitch(uL,uR);
+        taskYIELD();
             
         }        
 
@@ -338,20 +331,20 @@ if (testType==noTest){
             }
 
             if (newCommand){
-            turning = 1;
-            setpointX = Setpoint.x*10;
-            setpointY = Setpoint.y*10;
-            waitingCommand = 0;
-            newCommand = 0;
-            ddInitX = gX_hat;
-            ddInitY = gY_hat;  
+                turning = 1;
+                setpointX = Setpoint.x*10;
+                setpointY = Setpoint.y*10;
+                waitingCommand = 0;
+                newCommand = 0;
+                ddInitX = gX_hat;
+                ddInitY = gY_hat;  
             }
         
-        controllerApi(setpointX, setpointY,newCommand,&waitingCommand,
-         ticks_Left,ticks_Right,&distanceDriven, &turning,
-         xprev,yprev, thetaprev,ddInitX,ddInitY,delta_theta_gyro,&gX_hat,
-         &gY_hat,&gTheta_hat, &leftU,
-         &rightU);
+            controllerApi(setpointX, setpointY,newCommand,&waitingCommand,
+            ticks_Left,ticks_Right,&distanceDriven, &turning,
+            xprev,yprev, thetaprev,ddInitX,ddInitY,delta_theta_gyro,&gX_hat,
+            &gY_hat,&gTheta_hat, &leftU,
+            &rightU);
 
         // temp values of global states
             xprev     = gX_hat;
@@ -359,30 +352,28 @@ if (testType==noTest){
             thetaprev = gTheta_hat;
 
 
-            if (debug){
-            //TICKS
-            // printf("\r\nTicks Left: %f Ticks Right: %f\n\r",(float)ticks_Left,(float)ticks_Right);
-            // printf("\r\n total ticks R: %f \n\r",total_ticks_r);
-            // printf("\r\n total ticks L:  %f \n\r",total_ticks_l);
+            if (DEBUG){
+                //TICKS
+                // printf("\r\nTicks Left: %f Ticks Right: %f\n\r",(float)ticks_Left,(float)ticks_Right);
+                // printf("\r\n total ticks R: %f \n\r",total_ticks_r);
+                // printf("\r\n total ticks L:  %f \n\r",total_ticks_l);
 
-            //INPUT
-            // printf("\r\nuL: %i uR: %i\n\r",uL,uR);
-            
-            //SETPOINT
-            // printf("\r\n Setpoint: x %f y %f \n\r",(float)Setpoint.x, (float)Setpoint.y);
-            // printf("\r\n New Setpoint Command %d \n\r", new_setpoint_command);
-            
-            //GLOBAL STATES
-            // printf("\r\n gXhat: %f gYhat: %f gTheta: %f\n\r",(float)gX_hat,(float)gY_hat,(float)gTheta_hat);
-            
-            //Init Values
-            //printf("\r\n xHatInit: %f yHatInit: %f thetaHatInit: %f\n\r",(float)xHatInit,(float)yHatInit,(float)thetaHatInit);
-            
-            //Gyro Values
-            // printf("\r\n gyroX: %f gyroY: %f gyroZ: %f\n\r",(float)gyro_x,(float)gyro_y,(float)gyro_z);
-            // printf("\r\n accelX: %f accelY: %f accelZ: %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
-            
-
+                //INPUT
+                // printf("\r\nuL: %i uR: %i\n\r",uL,uR);
+                
+                //SETPOINT
+                // printf("\r\n Setpoint: x %f y %f \n\r",(float)Setpoint.x, (float)Setpoint.y);
+                // printf("\r\n New Setpoint Command %d \n\r", new_setpoint_command);
+                
+                //GLOBAL STATES
+                // printf("\r\n gXhat: %f gYhat: %f gTheta: %f\n\r",(float)gX_hat,(float)gY_hat,(float)gTheta_hat);
+                
+                //Init Values
+                //printf("\r\n xHatInit: %f yHatInit: %f thetaHatInit: %f\n\r",(float)xHatInit,(float)yHatInit,(float)thetaHatInit);
+                
+                //Gyro Values
+                // printf("\r\n gyroX: %f gyroY: %f gyroZ: %f\n\r",(float)gyro_x,(float)gyro_y,(float)gyro_z);
+                // printf("\r\n accelX: %f accelY: %f accelZ: %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
             }
 
 
