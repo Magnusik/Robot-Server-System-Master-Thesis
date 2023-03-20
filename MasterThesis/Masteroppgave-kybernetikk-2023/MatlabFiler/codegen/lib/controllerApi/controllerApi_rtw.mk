@@ -2,7 +2,7 @@
 ## Makefile generated for component 'controllerApi'. 
 ## 
 ## Makefile     : controllerApi_rtw.mk
-## Generated on : Tue Mar 07 09:22:08 2023
+## Generated on : Mon Mar 20 13:32:35 2023
 ## Final product: .\controllerApi.lib
 ## Product type : static-library
 ## 
@@ -24,7 +24,7 @@ MAKEFILE                  = controllerApi_rtw.mk
 MATLAB_ROOT               = C:\PROGRA~1\MATLAB\R2021a
 MATLAB_BIN                = C:\PROGRA~1\MATLAB\R2021a\bin
 MATLAB_ARCH_BIN           = $(MATLAB_BIN)\win64
-START_DIR                 = C:\Users\magnusik\Desktop\ROBOT-~1\MASTER~1\MASTER~1\MATLAB~1\codegen\lib\CONTRO~1
+START_DIR                 = C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\codegen\lib\controllerApi
 TGT_FCN_LIB               = ISO_C
 SOLVER_OBJ                = 
 CLASSIC_INTERFACE         = 0
@@ -316,11 +316,11 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS)
 	$(CPP) $(CPPFLAGS) -Fo"$@" "$<"
 
 
-{C:\Users\magnusik\Desktop\ROBOT-~1\MASTER~1\MASTER~1\MATLAB~1}.c.obj :
+{C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler}.c.obj :
 	$(CC) $(CFLAGS) -Fo"$@" "$<"
 
 
-{C:\Users\magnusik\Desktop\ROBOT-~1\MASTER~1\MASTER~1\MATLAB~1}.cpp.obj :
+{C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler}.cpp.obj :
 	$(CPP) $(CPPFLAGS) -Fo"$@" "$<"
 
 

@@ -7,29 +7,12 @@ _build/nrf52840_xxaa/api_task.c.o: software/api_task.c \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\_newlib_version.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\_intsup.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\_stdint.h \
- api/api.h api/rtwtypes.h motor_gen/tmwtypes.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include-fixed\limits.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include-fixed\syslimits.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\limits.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\newlib.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\cdefs.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\stddef.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\stdbool.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\float.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\stdlib.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\machine\ieeefp.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\_ansi.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\config.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\reent.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\_ansi.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\_types.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\machine\_types.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\lock.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\machine\stdlib.h \
  drivers/defines.h config/robot_config.h \
  ../../modules/nrfx/drivers/include/nrfx_saadc.h \
  ../../modules/nrfx/nrfx.h ../../integration/nrfx/nrfx_config.h \
  config/sdk_config.h ../../modules/nrfx/drivers/nrfx_common.h \
+ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\stddef.h \
+ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\stdbool.h \
  ../../modules/nrfx/mdk/nrf.h ../../modules/nrfx/mdk/nrf52840.h \
  ../../components/toolchain/cmsis/include/core_cm4.h \
  ../../components/toolchain/cmsis/include/core_cmInstr.h \
@@ -61,7 +44,17 @@ _build/nrf52840_xxaa/api_task.c.o: software/api_task.c \
  ../../components/libraries/util/nrf_assert.h \
  ../../components/libraries/util/app_error.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\stdio.h \
+ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\_ansi.h \
+ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\newlib.h \
+ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\config.h \
+ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\machine\ieeefp.h \
+ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\cdefs.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\stdarg.h \
+ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\reent.h \
+ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\_ansi.h \
+ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\_types.h \
+ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\machine\_types.h \
+ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\lock.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\types.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\_pthreadtypes.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\machine\types.h \
@@ -131,48 +124,6 @@ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-ea
 
 c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\_stdint.h:
 
-api/api.h:
-
-api/rtwtypes.h:
-
-motor_gen/tmwtypes.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include-fixed\limits.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include-fixed\syslimits.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\limits.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\newlib.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\cdefs.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\stddef.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\stdbool.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\float.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\stdlib.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\machine\ieeefp.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\_ansi.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\config.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\reent.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\_ansi.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\_types.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\machine\_types.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\lock.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\machine\stdlib.h:
-
 drivers/defines.h:
 
 config/robot_config.h:
@@ -186,6 +137,10 @@ config/robot_config.h:
 config/sdk_config.h:
 
 ../../modules/nrfx/drivers/nrfx_common.h:
+
+c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\stddef.h:
+
+c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\stdbool.h:
 
 ../../modules/nrfx/mdk/nrf.h:
 
@@ -251,7 +206,27 @@ config/sdk_config.h:
 
 c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\stdio.h:
 
+c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\_ansi.h:
+
+c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\newlib.h:
+
+c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\config.h:
+
+c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\machine\ieeefp.h:
+
+c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\cdefs.h:
+
 c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\stdarg.h:
+
+c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\reent.h:
+
+c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\_ansi.h:
+
+c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\_types.h:
+
+c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\machine\_types.h:
+
+c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\lock.h:
 
 c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\sys\types.h:
 

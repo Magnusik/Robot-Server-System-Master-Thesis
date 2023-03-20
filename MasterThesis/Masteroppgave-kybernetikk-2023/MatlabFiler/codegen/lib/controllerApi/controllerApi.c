@@ -5,7 +5,7 @@
  * File: controllerApi.c
  *
  * MATLAB Coder version            : 5.2
- * C/C++ source code generated on  : 07-Mar-2023 14:42:23
+ * C/C++ source code generated on  : 20-Mar-2023 14:44:52
  */
 
 /* Include Files */
@@ -161,7 +161,7 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
     /*  delta_x  = x_d - x  */
     /*  delta_y  = y_d - y */
     /*  theta_0 = theta_hat  */
-    if (fabs(theta - 3.1415926535897931) > 0.087266462599716474) {
+    if (fabs(theta - 3.1415926535897931) > 0.05235987755982989) {
       *turning = 1.0;
       if (theta - 3.1415926535897931 > 0.0) {
         /*  rotate counterclockwise */
@@ -179,25 +179,23 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
     }
     *distanceDriven = 0.0;
   } else {
-    *leftU = fmin(18.0, floor(distanceRemaining / 100.0 + 10.0));
+    delta_y = fmin(30.0, floor(distanceRemaining / 100.0 + 10.0));
     /* Input slows down depending on distance remaining to target */
     /* Moves the robot Forward if thresholds are met */
     /*   distanceRemaining [mm] */
     /*   distanceDriven [mm] */
     /*   thresholdDR [mm] */
     /*   thresholdDD [mm] */
+    /*  k_i = 0.5; */
+    /*  k_d = 0.5; */
+    /* thetaIntegralError = thetaIntegralError+thetaError; %% must be  */
+    /* pidU = k_p*thetaError+k_i*thetaIntegralError+k_d*thetaErrorDot; */
     if ((distanceRemaining > 50.0) &&
         (*distanceDriven < sqrt(a * a + b_a * b_a)) &&
         (!(*waitingCommand != 0.0))) {
-      *rightU = *leftU + 1.0;
-      if (theta - 3.1415926535897931 > 0.087266462599716474) {
-        /*  tilt counter clockwise */
-        *rightU = *leftU + 2.0;
-        (*leftU)--;
-      } else if (theta - 3.1415926535897931 < -0.087266462599716474) {
-        /*  tilt clockwise */
-        *rightU = *leftU;
-      }
+      theta = 0.75 * (theta - 3.1415926535897931);
+      *rightU = (delta_y + 1.0) + theta;
+      *leftU = delta_y - theta;
     } else {
       *rightU = 0.0;
       *leftU = 0.0;

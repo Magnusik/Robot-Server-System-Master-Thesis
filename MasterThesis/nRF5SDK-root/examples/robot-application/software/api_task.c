@@ -1,7 +1,5 @@
 #include "api_task.h"
 
-#include "api.h"
-
 #include "defines.h"
 #include "nrf_log.h"
 #include "FreeRTOS.h"
@@ -45,15 +43,15 @@ void vApiTask(void *arg){
 
 // SQUARE test parameters
 #if (TEST_TYPE==SQUARE) 
-    int squareTestInterval = 20;
+    int squareTestInterval = 30;
     double xarrayPos[4*squareTestInterval];
     double yarrayPos[4*squareTestInterval];
-    double xWaypoint1 = 300;
+    double xWaypoint1 = 1000;
     double yWaypoint1 = 0;
-    double xWaypoint2 = 300;
-    double yWaypoint2 = 300;
+    double xWaypoint2 = 1000;
+    double yWaypoint2 = 1000;
     double xWaypoint3 = 0;
-    double yWaypoint3 = 300;
+    double yWaypoint3 = 1000;
     double xWaypoint4 = 0;
     double yWaypoint4 = 0;
 
@@ -63,7 +61,7 @@ void vApiTask(void *arg){
 
 // run straight line test
 #if (TEST_TYPE==LINE)
-    double xWaypoint = 1000;
+    double xWaypoint = 3000;
     double yWaypoint = 0;
     int lineTestInterval = 20;
     double xarrayPos[lineTestInterval];

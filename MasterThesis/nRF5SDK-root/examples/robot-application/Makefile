@@ -330,7 +330,7 @@ INC_FOLDERS += \
   $(PROJ_DIR)/software \
   $(PROJ_DIR)/test_functions \
   $(PROJ_DIR)/motor_gen \
-  $(PROJ_DIR)/api \
+  $(PROJ_DIR)/controllerApi \
 
 # Libraries common to all targets
 LIB_FILES += \

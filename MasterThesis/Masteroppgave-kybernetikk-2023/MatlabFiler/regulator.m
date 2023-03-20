@@ -24,7 +24,7 @@ delta_x = x_d - x;
 delta_y = y_d - y;
 
 %thresholds
-angleThreshold = deg2rad(5);
+angleThreshold = deg2rad(3);
 
 maxDistanceTarget =sqrt( (x_d-ddInit(1))^2 + (y_d-ddInit(2))^2 ); 
 drThreshold      = 50;
@@ -45,7 +45,7 @@ if turning
     distanceDriven = 0;
 else
     
-    u = min(18,floor(10+distanceRemaining/100)); %Input slows down depending on distance remaining to target
+    u = min(30,floor(10+distanceRemaining/100)); %Input slows down depending on distance remaining to target
     
     [uL, uR]                    = moveForward(thetaError,distanceRemaining,distanceDriven,drThreshold,ddThreshold,u,waitingCommand);
     if (uL == 0) && (uR == 0)
