@@ -4,8 +4,8 @@
  * government, commercial, or other organizational use.
  * File: _coder_controllerApi_mex.c
  *
- * MATLAB Coder version            : 5.2
- * C/C++ source code generated on  : 20-Mar-2023 14:44:52
+ * MATLAB Coder version            : 5.4
+ * C/C++ source code generated on  : 03-May-2023 10:29:10
  */
 
 /* Include Files */
@@ -38,35 +38,35 @@ void mexFunction(int32_T nlhs, mxArray *plhs[], int32_T nrhs,
  */
 emlrtCTX mexFunctionCreateRootTLS(void)
 {
-  emlrtCreateRootTLSR2021a(&emlrtRootTLSGlobal, &emlrtContextGlobal, NULL, 1,
-                           NULL);
+  emlrtCreateRootTLSR2022a(&emlrtRootTLSGlobal, &emlrtContextGlobal, NULL, 1,
+                           NULL, (const char_T *)"windows-1252", true);
   return emlrtRootTLSGlobal;
 }
 
 /*
  * Arguments    : int32_T nlhs
- *                mxArray *plhs[8]
+ *                mxArray *plhs[9]
  *                int32_T nrhs
- *                const mxArray *prhs[14]
+ *                const mxArray *prhs[16]
  * Return Type  : void
  */
-void unsafe_controllerApi_mexFunction(int32_T nlhs, mxArray *plhs[8],
-                                      int32_T nrhs, const mxArray *prhs[14])
+void unsafe_controllerApi_mexFunction(int32_T nlhs, mxArray *plhs[9],
+                                      int32_T nrhs, const mxArray *prhs[16])
 {
   emlrtStack st = {
       NULL, /* site */
       NULL, /* tls */
       NULL  /* prev */
   };
-  const mxArray *outputs[8];
+  const mxArray *outputs[9];
   int32_T b_nlhs;
   st.tls = emlrtRootTLSGlobal;
   /* Check for proper number of arguments. */
-  if (nrhs != 14) {
-    emlrtErrMsgIdAndTxt(&st, "EMLRT:runTime:WrongNumberOfInputs", 5, 12, 14, 4,
+  if (nrhs != 16) {
+    emlrtErrMsgIdAndTxt(&st, "EMLRT:runTime:WrongNumberOfInputs", 5, 12, 16, 4,
                         13, "controllerApi");
   }
-  if (nlhs > 8) {
+  if (nlhs > 9) {
     emlrtErrMsgIdAndTxt(&st, "EMLRT:runTime:TooManyOutputArguments", 3, 4, 13,
                         "controllerApi");
   }

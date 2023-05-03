@@ -1,6 +1,9 @@
 @echo off
 
+set skipSetupArg=%2
+if "%skipSetupArg%" NEQ "skip_setup_msvc" (
 call "setup_msvc.bat"
+)
 
 cd .
 

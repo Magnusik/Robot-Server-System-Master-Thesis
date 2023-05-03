@@ -106,7 +106,12 @@ _build/nrf52840_xxaa/api_task.c.o: software/api_task.c \
  ../../integration/nrfx/legacy/nrf_drv_timer.h \
  ../../integration/nrfx/legacy/nrf_drv_ppi.h \
  ../../modules/nrfx/drivers/include/nrfx_ppi.h \
- ../../modules/nrfx/hal/nrf_ppi.h
+ ../../modules/nrfx/hal/nrf_ppi.h software/../drivers/display.h \
+ ../../components/libraries/gfx/nrf_lcd.h \
+ ../../components/libraries/gfx/nrf_gfx.h \
+ ../../components/libraries/gfx/nrf_lcd.h \
+ ../../external/thedotfactory_fonts/nrf_font.h \
+ software/../drivers/oled20.h
 
 software/api_task.h:
 
@@ -349,3 +354,15 @@ drivers/motor.h:
 ../../modules/nrfx/drivers/include/nrfx_ppi.h:
 
 ../../modules/nrfx/hal/nrf_ppi.h:
+
+software/../drivers/display.h:
+
+../../components/libraries/gfx/nrf_lcd.h:
+
+../../components/libraries/gfx/nrf_gfx.h:
+
+../../components/libraries/gfx/nrf_lcd.h:
+
+../../external/thedotfactory_fonts/nrf_font.h:
+
+software/../drivers/oled20.h:

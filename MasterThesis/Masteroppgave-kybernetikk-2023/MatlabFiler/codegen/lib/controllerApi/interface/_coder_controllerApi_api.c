@@ -4,8 +4,8 @@
  * government, commercial, or other organizational use.
  * File: _coder_controllerApi_api.c
  *
- * MATLAB Coder version            : 5.2
- * C/C++ source code generated on  : 20-Mar-2023 14:44:52
+ * MATLAB Coder version            : 5.4
+ * C/C++ source code generated on  : 03-May-2023 10:29:10
  */
 
 /* Include Files */
@@ -18,7 +18,7 @@ emlrtCTX emlrtRootTLSGlobal = NULL;
 emlrtContext emlrtContextGlobal = {
     true,                                                 /* bFirstTime */
     false,                                                /* bInitialized */
-    131610U,                                              /* fVersionInfo */
+    131626U,                                              /* fVersionInfo */
     NULL,                                                 /* fErrorFunction */
     "controllerApi",                                      /* fFunctionName */
     NULL,                                                 /* fRTCallStack */
@@ -107,13 +107,13 @@ static const mxArray *emlrt_marshallOut(const real_T u)
 }
 
 /*
- * Arguments    : const mxArray * const prhs[14]
+ * Arguments    : const mxArray * const prhs[16]
  *                int32_T nlhs
- *                const mxArray *plhs[8]
+ *                const mxArray *plhs[9]
  * Return Type  : void
  */
-void controllerApi_api(const mxArray *const prhs[14], int32_T nlhs,
-                       const mxArray *plhs[8])
+void controllerApi_api(const mxArray *const prhs[16], int32_T nlhs,
+                       const mxArray *plhs[9])
 {
   emlrtStack st = {
       NULL, /* site */
@@ -122,6 +122,7 @@ void controllerApi_api(const mxArray *const prhs[14], int32_T nlhs,
   };
   real_T ddInitX;
   real_T ddInitY;
+  real_T delta_t;
   real_T distanceDriven;
   real_T gTheta_hat;
   real_T gX_hat;
@@ -132,6 +133,7 @@ void controllerApi_api(const mxArray *const prhs[14], int32_T nlhs,
   real_T sThetaGyro;
   real_T setpointX;
   real_T setpointY;
+  real_T thetaIntegralError;
   real_T thetaprev;
   real_T ticksLeft;
   real_T ticksRight;
@@ -157,11 +159,14 @@ void controllerApi_api(const mxArray *const prhs[14], int32_T nlhs,
   ddInitX = emlrt_marshallIn(&st, emlrtAliasP(prhs[11]), "ddInitX");
   ddInitY = emlrt_marshallIn(&st, emlrtAliasP(prhs[12]), "ddInitY");
   sThetaGyro = emlrt_marshallIn(&st, emlrtAliasP(prhs[13]), "sThetaGyro");
+  thetaIntegralError =
+      emlrt_marshallIn(&st, emlrtAliasP(prhs[14]), "thetaIntegralError");
+  delta_t = emlrt_marshallIn(&st, emlrtAliasP(prhs[15]), "delta_t");
   /* Invoke the target function */
   controllerApi(setpointX, setpointY, newCommand, &waitingCommand, ticksLeft,
                 ticksRight, &distanceDriven, &turning, xprev, yprev, thetaprev,
-                ddInitX, ddInitY, sThetaGyro, &gX_hat, &gY_hat, &gTheta_hat,
-                &leftU, &rightU);
+                ddInitX, ddInitY, sThetaGyro, &thetaIntegralError, delta_t,
+                &gX_hat, &gY_hat, &gTheta_hat, &leftU, &rightU);
   /* Marshall function outputs */
   plhs[0] = emlrt_marshallOut(gX_hat);
   if (nlhs > 1) {
@@ -184,6 +189,9 @@ void controllerApi_api(const mxArray *const prhs[14], int32_T nlhs,
   }
   if (nlhs > 7) {
     plhs[7] = emlrt_marshallOut(waitingCommand);
+  }
+  if (nlhs > 8) {
+    plhs[8] = emlrt_marshallOut(thetaIntegralError);
   }
 }
 

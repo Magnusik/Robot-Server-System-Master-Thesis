@@ -1,8 +1,8 @@
-###########################################################################
+﻿###########################################################################
 ## Makefile generated for component 'controllerApi'. 
 ## 
 ## Makefile     : controllerApi_rtw.mk
-## Generated on : Mon Mar 20 13:32:35 2023
+## Generated on : Tue Apr 25 09:50:29 2023
 ## Final product: .\controllerApi.lib
 ## Product type : static-library
 ## 
@@ -21,15 +21,15 @@
 
 PRODUCT_NAME              = controllerApi
 MAKEFILE                  = controllerApi_rtw.mk
-MATLAB_ROOT               = C:\PROGRA~1\MATLAB\R2021a
-MATLAB_BIN                = C:\PROGRA~1\MATLAB\R2021a\bin
+MATLAB_ROOT               = C:\PROGRA~1\MATLAB\R2022a
+MATLAB_BIN                = C:\PROGRA~1\MATLAB\R2022a\bin
 MATLAB_ARCH_BIN           = $(MATLAB_BIN)\win64
-START_DIR                 = C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\codegen\lib\controllerApi
+START_DIR                 = C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler
 TGT_FCN_LIB               = ISO_C
 SOLVER_OBJ                = 
 CLASSIC_INTERFACE         = 0
 MODEL_HAS_DYNAMICALLY_LOADED_SFCNS = 
-RELATIVE_PATH_TO_ANCHOR   = .
+RELATIVE_PATH_TO_ANCHOR   = ..\..\..
 COMPILER_COMMAND_FILE     = controllerApi_rtw_comp.rsp
 CMD_FILE                  = controllerApi_rtw.rsp
 C_STANDARD_OPTS           = 
@@ -43,7 +43,7 @@ MODELLIB                  = controllerApi.lib
 
 # Toolchain Name:          Microsoft Visual C++ 2019 v16.0 | nmake (64-bit Windows)
 # Supported Version(s):    16.0
-# ToolchainInfo Version:   2021a
+# ToolchainInfo Version:   2022a
 # Specification Revision:  1.0
 # 
 #-------------------------------------------
@@ -68,7 +68,7 @@ CPU                 = AMD64
 APPVER              = 5.02
 CVARSFLAG           = $(cvarsmt)
 CFLAGS_ADDITIONAL   = -D_CRT_SECURE_NO_WARNINGS
-CPPFLAGS_ADDITIONAL = -EHs -D_CRT_SECURE_NO_WARNINGS /wd4251
+CPPFLAGS_ADDITIONAL = -EHs -D_CRT_SECURE_NO_WARNINGS /wd4251 /Zc:__cplusplus
 LIBS_TOOLCHAIN      = $(conlibs)
 
 TOOLCHAIN_SRCS = 
@@ -182,7 +182,7 @@ DEFINES = $(DEFINES_CUSTOM) $(DEFINES_STANDARD)
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = $(START_DIR)\controllerApi_data.c $(START_DIR)\rt_nonfinite.c $(START_DIR)\rtGetNaN.c $(START_DIR)\rtGetInf.c $(START_DIR)\controllerApi_initialize.c $(START_DIR)\controllerApi_terminate.c $(START_DIR)\controllerApi.c
+SRCS = $(START_DIR)\codegen\lib\controllerApi\controllerApi_data.c $(START_DIR)\codegen\lib\controllerApi\rt_nonfinite.c $(START_DIR)\codegen\lib\controllerApi\rtGetNaN.c $(START_DIR)\codegen\lib\controllerApi\rtGetInf.c $(START_DIR)\codegen\lib\controllerApi\controllerApi_initialize.c $(START_DIR)\codegen\lib\controllerApi\controllerApi_terminate.c $(START_DIR)\codegen\lib\controllerApi\controllerApi.c
 
 ALL_SRCS = $(SRCS)
 
@@ -308,6 +308,14 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS)
 	$(CPP) $(CPPFLAGS) -Fo"$@" "$<"
 
 
+{$(START_DIR)\codegen\lib\controllerApi}.c.obj :
+	$(CC) $(CFLAGS) -Fo"$@" "$<"
+
+
+{$(START_DIR)\codegen\lib\controllerApi}.cpp.obj :
+	$(CPP) $(CPPFLAGS) -Fo"$@" "$<"
+
+
 {$(START_DIR)}.c.obj :
 	$(CC) $(CFLAGS) -Fo"$@" "$<"
 
@@ -316,40 +324,32 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS)
 	$(CPP) $(CPPFLAGS) -Fo"$@" "$<"
 
 
-{C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler}.c.obj :
-	$(CC) $(CFLAGS) -Fo"$@" "$<"
+controllerApi_data.obj : "$(START_DIR)\codegen\lib\controllerApi\controllerApi_data.c"
+	$(CC) $(CFLAGS) -Fo"$@" "$(START_DIR)\codegen\lib\controllerApi\controllerApi_data.c"
 
 
-{C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler}.cpp.obj :
-	$(CPP) $(CPPFLAGS) -Fo"$@" "$<"
+rt_nonfinite.obj : "$(START_DIR)\codegen\lib\controllerApi\rt_nonfinite.c"
+	$(CC) $(CFLAGS) -Fo"$@" "$(START_DIR)\codegen\lib\controllerApi\rt_nonfinite.c"
 
 
-controllerApi_data.obj : $(START_DIR)\controllerApi_data.c
-	$(CC) $(CFLAGS) -Fo"$@" $(START_DIR)\controllerApi_data.c
+rtGetNaN.obj : "$(START_DIR)\codegen\lib\controllerApi\rtGetNaN.c"
+	$(CC) $(CFLAGS) -Fo"$@" "$(START_DIR)\codegen\lib\controllerApi\rtGetNaN.c"
 
 
-rt_nonfinite.obj : $(START_DIR)\rt_nonfinite.c
-	$(CC) $(CFLAGS) -Fo"$@" $(START_DIR)\rt_nonfinite.c
+rtGetInf.obj : "$(START_DIR)\codegen\lib\controllerApi\rtGetInf.c"
+	$(CC) $(CFLAGS) -Fo"$@" "$(START_DIR)\codegen\lib\controllerApi\rtGetInf.c"
 
 
-rtGetNaN.obj : $(START_DIR)\rtGetNaN.c
-	$(CC) $(CFLAGS) -Fo"$@" $(START_DIR)\rtGetNaN.c
+controllerApi_initialize.obj : "$(START_DIR)\codegen\lib\controllerApi\controllerApi_initialize.c"
+	$(CC) $(CFLAGS) -Fo"$@" "$(START_DIR)\codegen\lib\controllerApi\controllerApi_initialize.c"
 
 
-rtGetInf.obj : $(START_DIR)\rtGetInf.c
-	$(CC) $(CFLAGS) -Fo"$@" $(START_DIR)\rtGetInf.c
+controllerApi_terminate.obj : "$(START_DIR)\codegen\lib\controllerApi\controllerApi_terminate.c"
+	$(CC) $(CFLAGS) -Fo"$@" "$(START_DIR)\codegen\lib\controllerApi\controllerApi_terminate.c"
 
 
-controllerApi_initialize.obj : $(START_DIR)\controllerApi_initialize.c
-	$(CC) $(CFLAGS) -Fo"$@" $(START_DIR)\controllerApi_initialize.c
-
-
-controllerApi_terminate.obj : $(START_DIR)\controllerApi_terminate.c
-	$(CC) $(CFLAGS) -Fo"$@" $(START_DIR)\controllerApi_terminate.c
-
-
-controllerApi.obj : $(START_DIR)\controllerApi.c
-	$(CC) $(CFLAGS) -Fo"$@" $(START_DIR)\controllerApi.c
+controllerApi.obj : "$(START_DIR)\codegen\lib\controllerApi\controllerApi.c"
+	$(CC) $(CFLAGS) -Fo"$@" "$(START_DIR)\codegen\lib\controllerApi\controllerApi.c"
 
 
 ###########################################################################

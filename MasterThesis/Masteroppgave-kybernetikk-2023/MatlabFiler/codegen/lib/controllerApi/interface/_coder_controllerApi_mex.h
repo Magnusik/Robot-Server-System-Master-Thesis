@@ -4,8 +4,8 @@
  * government, commercial, or other organizational use.
  * File: _coder_controllerApi_mex.h
  *
- * MATLAB Coder version            : 5.2
- * C/C++ source code generated on  : 20-Mar-2023 14:44:52
+ * MATLAB Coder version            : 5.4
+ * C/C++ source code generated on  : 03-May-2023 10:29:10
  */
 
 #ifndef _CODER_CONTROLLERAPI_MEX_H
@@ -26,8 +26,8 @@ MEXFUNCTION_LINKAGE void mexFunction(int32_T nlhs, mxArray *plhs[],
 
 emlrtCTX mexFunctionCreateRootTLS(void);
 
-void unsafe_controllerApi_mexFunction(int32_T nlhs, mxArray *plhs[8],
-                                      int32_T nrhs, const mxArray *prhs[14]);
+void unsafe_controllerApi_mexFunction(int32_T nlhs, mxArray *plhs[9],
+                                      int32_T nrhs, const mxArray *prhs[16]);
 
 #ifdef __cplusplus
 }

@@ -17,9 +17,7 @@
 #include "positionEstimate.h"
 
 #include "motor.h"
-
-
-
+#include "../drivers/display.h"
 
 
 
@@ -27,51 +25,51 @@
 
 void vApiTask(void *arg){
 
-//Constants
-#define COMPLETE 0
-#define GYRO_MIN 0.25
+    //Constants
+    #define COMPLETE 0
+    #define GYRO_MIN 0.25
 
-//MACRO variables
-#define SQUARE 1
-#define LINE 2
-#define NO_TEST 0
+    //MACRO variables
+    #define SQUARE 1
+    #define LINE 2
+    #define NO_TEST 0
 
-//MACROs for running different sequences
-#define DEBUG 1
-#define LOG 0
-#define TEST_TYPE LINE
+    //MACROs for running different sequences
+    #define DEBUG 1
+    #define LOG 0
+    #define TEST_TYPE SQUARE // SQUARE | LINE | NO_TEST
 
-// SQUARE test parameters
-#if (TEST_TYPE==SQUARE) 
-    int squareTestInterval = 30;
-    double xarrayPos[4*squareTestInterval];
-    double yarrayPos[4*squareTestInterval];
-    double xWaypoint1 = 1000;
-    double yWaypoint1 = 0;
-    double xWaypoint2 = 1000;
-    double yWaypoint2 = 1000;
-    double xWaypoint3 = 0;
-    double yWaypoint3 = 1000;
-    double xWaypoint4 = 0;
-    double yWaypoint4 = 0;
+    // SQUARE test parameters
+    #if (TEST_TYPE==SQUARE) 
+        int squareTestInterval = 30;
+        double xarrayPos[4*squareTestInterval];
+        double yarrayPos[4*squareTestInterval];
+        double xWaypoint1 = 300;
+        double yWaypoint1 = 0;
+        double xWaypoint2 = 300;
+        double yWaypoint2 = 300;
+        double xWaypoint3 = 0;
+        double yWaypoint3 = 300;
+        double xWaypoint4 = 0;
+        double yWaypoint4 = 0;
 
-    double xWaypoint  = xWaypoint1;
-    double yWaypoint = yWaypoint1;
-#endif
+        double xWaypoint  = xWaypoint1;
+        double yWaypoint = yWaypoint1;
+    #endif
 
-// run straight line test
-#if (TEST_TYPE==LINE)
-    double xWaypoint = 3000;
-    double yWaypoint = 0;
-    int lineTestInterval = 20;
-    double xarrayPos[lineTestInterval];
-    double yarrayPos[lineTestInterval];
-#endif
+    // run straight line test
+    #if (TEST_TYPE==LINE)
+        double xWaypoint = 3000;
+        double yWaypoint = 0;
+        int lineTestInterval = 20;
+        double xarrayPos[lineTestInterval];
+        double yarrayPos[lineTestInterval];
+    #endif
 
-#if (TEST_TYPE==NO_TEST)
-    double xWaypoint=0;
-    double yWaypoint=0;
-#endif
+    #if (TEST_TYPE==NO_TEST)
+        double xWaypoint=0;
+        double yWaypoint=0;
+    #endif
 
 
     vServo_setAngle(0);
@@ -85,14 +83,14 @@ void vApiTask(void *arg){
     double ticks_Left = 0;
     double ticks_Right = 0;
     uint8_t robotMovement = moveStop;
-    
+
     //prehandshake
     double ticks_Left_preHandshake      = 0;
     double ticks_Right_preHandshake     = 0;
     double total_ticks_r_preHandshake   = 0;
     double total_ticks_l_preHandshake   = 0;
 
-    //new api
+    //new controllerApi
     double turning=1;
     double setpointX = 0;
     double setpointY = 0;
@@ -105,6 +103,7 @@ void vApiTask(void *arg){
     double ddInitX = 0;
     double ddInitY = 0;
     gTheta_hat = thetaprev;
+    double thetaIntegralError = 0;
 
     bool calibration = 1;
     TickType_t ticks_since_startup = xTaskGetTickCount();
@@ -122,6 +121,12 @@ void vApiTask(void *arg){
     int uL = 0;
     int uR = 0;
 
+    // used to display variables on OLED screen
+    char test[128];
+    char test2[128];
+    char test3[128];
+    char test4[128];
+
     while (true) {
 
         vTaskDelay(200);
@@ -133,7 +138,7 @@ void vApiTask(void *arg){
         // double Y_hat = gY_hat;
         // double Theta_hat = gTheta_hat;
 
-        //Read IMU data iff Kalman is enabled
+        //Read IMU data 
         IMU_reading_t gyro;
         // IMU_reading_t accel;
         IMU_read();
@@ -163,7 +168,8 @@ void vApiTask(void *arg){
         // double accel_y = accel.y; 
         // double accel_z = accel.z;
 
-        if (DEBUG){
+        #if (DEBUG)
+        {
             //TICKS
             //printf("\r\nTicks Left: %f Ticks Right: %f\n\r",(float)ticks_Left_preHandshake,(float)ticks_Right_preHandshake);
             //printf("\r\n total ticks R: %f \n\r",total_ticks_r_preHandshake);
@@ -193,7 +199,7 @@ void vApiTask(void *arg){
             //printf("\r\n%f %f %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
             //printf("\r\n accelX: %f accelY: %f accelZ: %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
         }
-
+        #endif
 
         if(!gHandshook){
             //printf("\r\n Testing before handshake block\n\r");
@@ -204,7 +210,7 @@ void vApiTask(void *arg){
             total_ticks_r_preHandshake = total_ticks_r_preHandshake+ticks_Right_preHandshake;
             total_ticks_l_preHandshake = total_ticks_l_preHandshake+ticks_Left_preHandshake;
 
-            // Matlab generated C code
+            // 
             if (newCommand){
             turning = 1;
             setpointX = xWaypoint;
@@ -212,14 +218,37 @@ void vApiTask(void *arg){
             waitingCommand = 0;
             newCommand = 0;
             ddInitX = gX_hat;
-            ddInitY = gY_hat;  
+            ddInitY = gY_hat;
+            thetaIntegralError=0;  
             }
             //vTaskDelay(100);
-            controllerApi(setpointX, setpointY,newCommand,&waitingCommand,
-         ticks_Left_preHandshake,ticks_Right_preHandshake,&distanceDriven, &turning,
-         xprev,yprev, thetaprev,ddInitX,ddInitY,delta_theta_gyro,&gX_hat,
-         &gY_hat,&gTheta_hat, &leftU,
-         &rightU);
+            
+        //  Displaying variables on OLED screen
+        // Keep in mind that this action may slow down the system affecting the time constant of the system.
+        // Use it mainly for debugging.
+
+        // sprintf(test, "X: %i Y: %i", (int)gX_hat, (int)gY_hat); 
+        // sprintf(test2, "Left: %f", (float)total_ticks_l_preHandshake);  
+        // sprintf(test3, "Right: %f", (float)total_ticks_r_preHandshake);  
+        // sprintf(test4, "Theta: %f", (float)gTheta_hat);  
+        // display_text_on_line(1, test);
+        // display_text_on_line(2, test2);
+        // display_text_on_line(3, test3);
+        // display_text_on_line(4, test4);
+            
+            
+            //MATLAB generated function
+
+            controllerApi(setpointX, setpointY,  newCommand,
+                   &waitingCommand, ticks_Left_preHandshake, ticks_Right_preHandshake,
+                   &distanceDriven, &turning, xprev,
+                   yprev, thetaprev, ddInitX,
+                   ddInitY, delta_theta_gyro,
+                   &thetaIntegralError, delta_t,
+                   &gX_hat, &gY_hat, &gTheta_hat,
+                   &leftU, &rightU);
+
+         
             
 
             //SQUARE test MACRO
@@ -312,9 +341,7 @@ void vApiTask(void *arg){
         uR = (int)rightU;
 
         vMotorMovementSwitch(uL,uR);
-        taskYIELD();
-            
-        }        
+        taskYIELD();        
 
 
         if (gHandshook) {
@@ -338,11 +365,14 @@ void vApiTask(void *arg){
                 ddInitY = gY_hat;  
             }
         
-            controllerApi(setpointX, setpointY,newCommand,&waitingCommand,
-            ticks_Left,ticks_Right,&distanceDriven, &turning,
-            xprev,yprev, thetaprev,ddInitX,ddInitY,delta_theta_gyro,&gX_hat,
-            &gY_hat,&gTheta_hat, &leftU,
-            &rightU);
+          controllerApi(setpointX, setpointY,  newCommand,
+                   &waitingCommand, ticks_Left, ticks_Right,
+                   &distanceDriven, &turning, xprev,
+                   yprev, thetaprev, ddInitX,
+                   ddInitY, delta_theta_gyro,
+                   &thetaIntegralError, delta_t,
+                   &gX_hat, &gY_hat, &gTheta_hat,
+                   &leftU, &rightU);
 
         // temp values of global states
             xprev     = gX_hat;
@@ -384,11 +414,10 @@ void vApiTask(void *arg){
 
 
 			xSemaphoreTake(xPoseMutex, 15);
-            set_position_estimate_heading(gTheta_hat);					// previously: gTheta_hat = kf_state.heading;  replaced with: gTheta_hat = gyroSum;
+            set_position_estimate_heading(gTheta_hat);					
             set_position_estimate_x(gX_hat/1000); // convert from mm to m
             set_position_estimate_y(gY_hat/1000); // convert from mm to m
             xSemaphoreGive(xPoseMutex);
-            
             
             if (checkForCollision() == true){ 
                 motor_brake();
@@ -420,7 +449,7 @@ void vApiTask(void *arg){
             // if ((Setpoint.x - X_hat) < 0.02) active_command_exists = false;
         } //endif (gHandshook)
     }
-        // }
+}
     // vTaskPrioritySet(handle_api, 1);
 
 

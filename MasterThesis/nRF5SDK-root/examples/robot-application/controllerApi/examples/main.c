@@ -4,8 +4,8 @@
  * government, commercial, or other organizational use.
  * File: main.c
  *
- * MATLAB Coder version            : 5.2
- * C/C++ source code generated on  : 20-Mar-2023 14:44:52
+ * MATLAB Coder version            : 5.4
+ * C/C++ source code generated on  : 03-May-2023 10:29:10
  */
 
 /*************************************************************************/
@@ -67,6 +67,7 @@ static void main_controllerApi(void)
   double leftU;
   double rightU;
   double setpointX_tmp;
+  double thetaIntegralError;
   double turning;
   double waitingCommand;
   /* Initialize function 'controllerApi' input arguments. */
@@ -75,11 +76,12 @@ static void main_controllerApi(void)
   distanceDriven = setpointX_tmp;
   turning = setpointX_tmp;
   waitingCommand = setpointX_tmp;
+  thetaIntegralError = setpointX_tmp;
   controllerApi(setpointX_tmp, setpointX_tmp, setpointX_tmp, &waitingCommand,
                 setpointX_tmp, setpointX_tmp, &distanceDriven, &turning,
                 setpointX_tmp, setpointX_tmp, setpointX_tmp, setpointX_tmp,
-                setpointX_tmp, setpointX_tmp, &gX_hat, &gY_hat, &gTheta_hat,
-                &leftU, &rightU);
+                setpointX_tmp, setpointX_tmp, &thetaIntegralError,
+                setpointX_tmp, &gX_hat, &gY_hat, &gTheta_hat, &leftU, &rightU);
 }
 
 /*

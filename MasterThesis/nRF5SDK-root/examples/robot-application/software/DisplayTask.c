@@ -18,11 +18,12 @@
 
 QueueHandle_t queue_display;
 
+
 void display_task(void *arg) {
     NRF_LOG_INFO("Display task: initializing");
     display_init();
-
     display_operation_t display_operation;
+    display_clear();
 
     NRF_LOG_INFO("Display task: init complete");
     for (;;) {

@@ -1,5 +1,5 @@
-function [gX_hat,gY_hat,gTheta_hat,distanceDriven,leftU,rightU,turning,waitingCommand] = ...
-    controllerApi(setpointX,setpointY,newCommand,waitingCommand,ticksLeft,ticksRight,distanceDriven,turning,xprev,yprev,thetaprev,ddInitX,ddInitY,sThetaGyro)
+function [gX_hat,gY_hat,gTheta_hat,distanceDriven,leftU,rightU,turning,waitingCommand,thetaIntegralError] = ...
+    controllerApi(setpointX,setpointY,newCommand,waitingCommand,ticksLeft,ticksRight,distanceDriven,turning,xprev,yprev,thetaprev,ddInitX,ddInitY,sThetaGyro,thetaIntegralError,delta_t)
 %changes global states and returns input to the motors
 % 
 
@@ -10,7 +10,7 @@ prev = [xprev,yprev,thetaprev];
 
 [xHat, sDistance] = estimator(Encoder,prev,turning,sThetaGyro);
 
-[uL, uR,distanceDriven,turning,waitingCommand] = regulator(xHat,setpoint,turning,sDistance,distanceDriven,ddInit,waitingCommand);
+[uL, uR,distanceDriven,turning,waitingCommand,thetaIntegralError] = regulator(xHat,setpoint,turning,sDistance,distanceDriven,ddInit,waitingCommand,thetaIntegralError,delta_t);
 
 gX_hat = xHat(1);
 gY_hat = xHat(2);

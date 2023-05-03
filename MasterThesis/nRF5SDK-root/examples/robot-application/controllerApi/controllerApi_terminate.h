@@ -4,8 +4,8 @@
  * government, commercial, or other organizational use.
  * File: controllerApi_terminate.h
  *
- * MATLAB Coder version            : 5.2
- * C/C++ source code generated on  : 20-Mar-2023 14:44:52
+ * MATLAB Coder version            : 5.4
+ * C/C++ source code generated on  : 03-May-2023 10:29:10
  */
 
 #ifndef CONTROLLERAPI_TERMINATE_H
