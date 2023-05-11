@@ -581,7 +581,7 @@
     <param.AutoInferUnboundedSizeThreshold>2048</param.AutoInferUnboundedSizeThreshold>
     <param.EnableFixedPointStep>false</param.EnableFixedPointStep>
     <param.EnableScreener>true</param.EnableScreener>
-    <param.AnnotationChecksum>2271272794</param.AnnotationChecksum>
+    <param.AnnotationChecksum>3802793537</param.AnnotationChecksum>
     <var.LegacyTarget />
     <var.MirrorOnOpen>false</var.MirrorOnOpen>
     <param.FixedPointEnabled>false</param.FixedPointEnabled>
@@ -591,12 +591,12 @@
     <param.hdlParamStorage />
     <var.gc.lastOutputRoot>codegen\lib\controllerApi</var.gc.lastOutputRoot>
     <var.gc.lastOutputType>C_CODE</var.gc.lastOutputType>
-    <var.gc.preBuildChecksum>4203250194</var.gc.preBuildChecksum>
+    <var.gc.preBuildChecksum>367943694</var.gc.preBuildChecksum>
     <var.cfi.lastOutputRoot>codegen\mex\controllerApi</var.cfi.lastOutputRoot>
-    <var.cfi.preBuildChecksum>1442832056</var.cfi.preBuildChecksum>
+    <var.cfi.preBuildChecksum>2744156814</var.cfi.preBuildChecksum>
     <var.lastCfiTestSnippet>test_newApi</var.lastCfiTestSnippet>
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
-    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\controllerApi.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\estimator.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\modulus.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\moveForward.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\regulator.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\rotateRobot.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;2621650183&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
+    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\controllerApi.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\estimator.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\modulus.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\moveForward.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\regulator.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\rotateRobot.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;1402153505&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
     <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\controllerApi.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\estimator.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\modulus.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\moveForward.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\regulator.m&lt;/file&gt;&lt;file&gt;C:\Users\magnusik\Desktop\Robot-Server-System-Master-Thesis\MasterThesis\Masteroppgave-Kybernetikk-2023\MatlabFiler\rotateRobot.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
     <param.forceMexBuild>false</param.forceMexBuild>
     <param.NoDefaultJIT>false</param.NoDefaultJIT>
@@ -846,7 +846,7 @@
     </unset>
     <fileset.entrypoints>
       <file custom-data-expanded="false" value="${PROJECT_ROOT}\controllerApi.m">
-        <Marker>1683102521385</Marker>
+        <Marker>1683619270040</Marker>
       </file>
     </fileset.entrypoints>
     <fileset.testbench>

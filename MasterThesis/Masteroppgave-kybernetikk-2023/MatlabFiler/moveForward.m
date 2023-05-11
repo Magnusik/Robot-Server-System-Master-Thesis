@@ -5,16 +5,16 @@ function [uL,uR] = moveForward(thetaError,distanceRemaining,distanceDriven,thres
 %  thresholdDR [mm]
 %  thresholdDD [mm]
 
-k_p = 6;
-k_i = 5;
+k_p = 0;
+k_i = 40;
 % k_d = 0.5;
 
 
 %% Single Input [thetaError] Multiple Output [uL, uR] PID regulator (SIMO PID)
 
 %PID saturation limits
-p_lim = 5;
-i_lim = 2;
+p_lim = 20;
+i_lim = 20;
 
 %PID corrections with saturation
 u_p = min(k_p * abs(thetaError),p_lim);

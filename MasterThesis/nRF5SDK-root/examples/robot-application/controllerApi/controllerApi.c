@@ -5,7 +5,7 @@
  * File: controllerApi.c
  *
  * MATLAB Coder version            : 5.4
- * C/C++ source code generated on  : 03-May-2023 10:29:10
+ * C/C++ source code generated on  : 09-May-2023 10:01:22
  */
 
 /* Include Files */
@@ -121,8 +121,8 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
   double delta_y;
   double distanceRemaining;
   double leftover;
+  double sDistance;
   double theta;
-  double u_i;
   (void)newCommand;
   /*  Calculation of current position and orientation [x_hat, y_hat, theta_hat],
    * and distance moved during this sample */
@@ -140,16 +140,16 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
   }
   /* Distance [mm] from one sample, Distance of ticks difference (used to
    * calculate angle theta)  */
-  u_i = (ticksLeft + ticksRight) / 2.0 * 0.70162235930172046;
+  sDistance = (ticksLeft + ticksRight) / 2.0 * 0.70162235930172046;
   /* Theta change orientation [rad] in one sample */
   if (*turning != 0.0) {
     *gX_hat = xprev;
     *gY_hat = yprev;
     theta = thetaprev + 0.017453292519943295 * sThetaGyro;
-    u_i = 0.0;
+    sDistance = 0.0;
   } else {
-    *gX_hat = xprev + u_i * cos(thetaprev);
-    *gY_hat = yprev + u_i * sin(thetaprev);
+    *gX_hat = xprev + sDistance * cos(thetaprev);
+    *gY_hat = yprev + sDistance * sin(thetaprev);
     theta = thetaprev + delta_y * fabs(ticksRight - ticksLeft) / 2.0 *
                             0.70162235930172046 / 527.78756580308527 * 2.0 *
                             3.1415926535897931;
@@ -177,7 +177,7 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
   a = setpointX - ddInitX;
   b_a = setpointY - ddInitY;
   distanceRemaining = sqrt(theta * theta + delta_y * delta_y);
-  *distanceDriven += u_i;
+  *distanceDriven += sDistance;
   /* Angle towards setpoint   */
   theta = (rt_atan2d_snf(delta_y, theta) - *gTheta_hat) + 3.1415926535897931;
   /* modulus function */
@@ -185,8 +185,6 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
   leftover = theta - 6.2831853071795862 * delta_y;
   /* smallest signed angle */
   /* Integral Error */
-  /*  note to self, vurdere å endre slik at små verdier er lik 0 for å unngå */
-  /*  drift */
   /*  saturation of integralerror to +-20 degrees */
   *thetaIntegralError =
       fmax(fmin(*thetaIntegralError + (leftover - 3.1415926535897931),
@@ -216,8 +214,8 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
     }
     *distanceDriven = 0.0;
   } else {
-    double dirProportionalControlLeft_tmp;
     int dirIntegralControlLeft_tmp;
+    int u_p;
     theta = fmin(40.0, distanceRemaining / 500.0 + 12.0);
     /* Input slows down depending on distance remaining to target */
     /* Moves the robot Forward if thresholds are met */
@@ -230,15 +228,15 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
      * PID) */
     /* PID saturation limits */
     /* PID corrections with saturation */
-    delta_y = fmin(6.0 * fabs(leftover - 3.1415926535897931), 5.0);
-    u_i = fmin(5.0 * fabs(*thetaIntegralError) * delta_t, 2.0);
+    u_p = (int)fmin(0.0 * fabs(leftover - 3.1415926535897931), 20.0);
+    delta_y = fmin(40.0 * fabs(*thetaIntegralError) * delta_t, 20.0);
     /*  Conditional Control Terms depending on direction */
-    dirProportionalControlLeft_tmp = leftover - 3.1415926535897931;
+    sDistance = leftover - 3.1415926535897931;
     if (!rtIsNaN(leftover - 3.1415926535897931)) {
       if (leftover - 3.1415926535897931 < 0.0) {
-        dirProportionalControlLeft_tmp = -1.0;
+        sDistance = -1.0;
       } else {
-        dirProportionalControlLeft_tmp = (leftover - 3.1415926535897931 > 0.0);
+        sDistance = (leftover - 3.1415926535897931 > 0.0);
       }
     }
     /*  1 if tilted left, 0 if tilted right, 0.5 if at target direction */
@@ -251,13 +249,12 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
         (*distanceDriven < sqrt(a * a + b_a * b_a)) &&
         (!(*waitingCommand != 0.0))) {
       *rightU = rt_roundd_snf(
-          ((theta + 1.0) +
-           (dirProportionalControlLeft_tmp + 1.0) / 2.0 * delta_y) +
-          ((double)dirIntegralControlLeft_tmp + 1.0) / 2.0 * u_i);
+          ((theta + 1.0) + (sDistance + 1.0) / 2.0 * (double)u_p) +
+          ((double)dirIntegralControlLeft_tmp + 1.0) / 2.0 * delta_y);
       /*  to minimize type casting error to int later */
-      *leftU = rt_roundd_snf(
-          (theta + (1.0 - dirProportionalControlLeft_tmp) / 2.0 * delta_y) +
-          (1.0 - (double)dirIntegralControlLeft_tmp) / 2.0 * u_i);
+      *leftU = rt_roundd_snf((theta + (1.0 - sDistance) / 2.0 * (double)u_p) +
+                             (1.0 - (double)dirIntegralControlLeft_tmp) / 2.0 *
+                                 delta_y);
     } else {
       *rightU = 0.0;
       *leftU = 0.0;

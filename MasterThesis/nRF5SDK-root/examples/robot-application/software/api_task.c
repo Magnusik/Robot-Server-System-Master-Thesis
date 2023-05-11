@@ -37,7 +37,7 @@ void vApiTask(void *arg){
     //MACROs for running different sequences
     #define DEBUG 1
     #define LOG 0
-    #define TEST_TYPE SQUARE // SQUARE | LINE | NO_TEST
+    #define TEST_TYPE LINE // SQUARE | LINE | NO_TEST
 
     // SQUARE test parameters
     #if (TEST_TYPE==SQUARE) 
