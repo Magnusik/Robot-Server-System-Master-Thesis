@@ -15,7 +15,7 @@ oneRevWheelBase      = pi*diameterWheelBase;
 %average of tick
 sTicksLeft          = Encoder(1);
 sTicksRight         = Encoder(2);
-dTicks              = sign(sTicksRight)*abs(sTicksRight-sTicksLeft)/2;
+dTicks              = sign(sTicksRight-sTicksLeft)*abs(sTicksRight-sTicksLeft)/2;
 aTicks              = (sTicksLeft+sTicksRight)/2;
 
 %Distance [mm] from one sample, Distance of ticks difference (used to calculate angle theta) 

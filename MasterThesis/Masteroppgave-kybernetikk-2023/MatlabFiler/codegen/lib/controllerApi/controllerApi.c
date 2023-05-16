@@ -5,7 +5,7 @@
  * File: controllerApi.c
  *
  * MATLAB Coder version            : 5.4
- * C/C++ source code generated on  : 09-May-2023 10:01:22
+ * C/C++ source code generated on  : 16-May-2023 19:42:06
  */
 
 /* Include Files */
@@ -100,6 +100,7 @@ static double rt_roundd_snf(double u)
  *                double sThetaGyro
  *                double *thetaIntegralError
  *                double delta_t
+ *                double *thetaError
  *                double *gX_hat
  *                double *gY_hat
  *                double *gTheta_hat
@@ -112,17 +113,18 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
                    double *distanceDriven, double *turning, double xprev,
                    double yprev, double thetaprev, double ddInitX,
                    double ddInitY, double sThetaGyro,
-                   double *thetaIntegralError, double delta_t, double *gX_hat,
-                   double *gY_hat, double *gTheta_hat, double *leftU,
-                   double *rightU)
+                   double *thetaIntegralError, double delta_t,
+                   double *thetaError, double *gX_hat, double *gY_hat,
+                   double *gTheta_hat, double *leftU, double *rightU)
 {
   double a;
   double b_a;
   double delta_y;
   double distanceRemaining;
   double leftover;
-  double sDistance;
   double theta;
+  double thetaDerivativeError;
+  double u_i;
   (void)newCommand;
   /*  Calculation of current position and orientation [x_hat, y_hat, theta_hat],
    * and distance moved during this sample */
@@ -130,29 +132,29 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
   /* Constants  [ticks], [mm] */
   /* Encoder ticks from sample, difference of tick sample and  */
   /* average of tick */
-  delta_y = ticksRight;
-  if (!rtIsNaN(ticksRight)) {
-    if (ticksRight < 0.0) {
+  theta = ticksRight - ticksLeft;
+  delta_y = theta;
+  if (!rtIsNaN(theta)) {
+    if (theta < 0.0) {
       delta_y = -1.0;
     } else {
-      delta_y = (ticksRight > 0.0);
+      delta_y = (theta > 0.0);
     }
   }
   /* Distance [mm] from one sample, Distance of ticks difference (used to
    * calculate angle theta)  */
-  sDistance = (ticksLeft + ticksRight) / 2.0 * 0.70162235930172046;
+  u_i = (ticksLeft + ticksRight) / 2.0 * 0.70162235930172046;
   /* Theta change orientation [rad] in one sample */
   if (*turning != 0.0) {
     *gX_hat = xprev;
     *gY_hat = yprev;
     theta = thetaprev + 0.017453292519943295 * sThetaGyro;
-    sDistance = 0.0;
+    u_i = 0.0;
   } else {
-    *gX_hat = xprev + sDistance * cos(thetaprev);
-    *gY_hat = yprev + sDistance * sin(thetaprev);
-    theta = thetaprev + delta_y * fabs(ticksRight - ticksLeft) / 2.0 *
-                            0.70162235930172046 / 527.78756580308527 * 2.0 *
-                            3.1415926535897931;
+    *gX_hat = xprev + u_i * cos(thetaprev);
+    *gY_hat = yprev + u_i * sin(thetaprev);
+    theta = thetaprev + delta_y * fabs(theta) / 2.0 * 0.70162235930172046 /
+                            527.78756580308527 * 2.0 * 3.1415926535897931;
   }
   /* modulus function */
   /*  smallest signed angle (maps angle into [-pi,pi] */
@@ -173,17 +175,21 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
   /* Difference in posistion towards the target  */
   theta = setpointX - *gX_hat;
   delta_y = setpointY - *gY_hat;
-  /* Condition Thresholds */
+  /* Conditional Thresholds */
   a = setpointX - ddInitX;
   b_a = setpointY - ddInitY;
   distanceRemaining = sqrt(theta * theta + delta_y * delta_y);
-  *distanceDriven += sDistance;
+  *distanceDriven += u_i;
   /* Angle towards setpoint   */
+  /* Proportional Error */
   theta = (rt_atan2d_snf(delta_y, theta) - *gTheta_hat) + 3.1415926535897931;
   /* modulus function */
   delta_y = floor(theta / 6.2831853071795862);
   leftover = theta - 6.2831853071795862 * delta_y;
   /* smallest signed angle */
+  /* Derivative Error */
+  thetaDerivativeError =
+      ((leftover - 3.1415926535897931) - *thetaError) / delta_t;
   /* Integral Error */
   /*  saturation of integralerror to +-20 degrees */
   *thetaIntegralError =
@@ -214,29 +220,31 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
     }
     *distanceDriven = 0.0;
   } else {
+    double dirProportionalControlLeft_tmp;
+    double u_d;
     int dirIntegralControlLeft_tmp;
-    int u_p;
-    theta = fmin(40.0, distanceRemaining / 500.0 + 12.0);
+    theta = fmin(30.0, distanceRemaining / 200.0 + 10.0);
     /* Input slows down depending on distance remaining to target */
     /* Moves the robot Forward if thresholds are met */
     /*   distanceRemaining [mm] */
     /*   distanceDriven [mm] */
     /*   thresholdDR [mm] */
     /*   thresholdDD [mm] */
-    /*  k_d = 0.5; */
-    /*  Single Input [thetaError] Multiple Output [uL, uR] PID regulator (SIMO
-     * PID) */
-    /* PID saturation limits */
+    /*  PID REG Input [thetaError,thetaIntegralError,thetaDerivativeError]
+     * Output [uL, uR] PID regulator (MIMO PID) */
+    /* PID gains */
+    /* PID saturation limits  */
     /* PID corrections with saturation */
-    u_p = (int)fmin(0.0 * fabs(leftover - 3.1415926535897931), 20.0);
-    delta_y = fmin(40.0 * fabs(*thetaIntegralError) * delta_t, 20.0);
+    delta_y = fmin(20.0 * fabs(leftover - 3.1415926535897931), 20.0);
+    u_i = fmin(10.0 * fabs(*thetaIntegralError) * delta_t, 10.0);
+    u_d = fmin(0.5 * fabs(thetaDerivativeError), 10.0);
     /*  Conditional Control Terms depending on direction */
-    sDistance = leftover - 3.1415926535897931;
+    dirProportionalControlLeft_tmp = leftover - 3.1415926535897931;
     if (!rtIsNaN(leftover - 3.1415926535897931)) {
       if (leftover - 3.1415926535897931 < 0.0) {
-        sDistance = -1.0;
+        dirProportionalControlLeft_tmp = -1.0;
       } else {
-        sDistance = (leftover - 3.1415926535897931 > 0.0);
+        dirProportionalControlLeft_tmp = (leftover - 3.1415926535897931 > 0.0);
       }
     }
     /*  1 if tilted left, 0 if tilted right, 0.5 if at target direction */
@@ -245,16 +253,26 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
     } else {
       dirIntegralControlLeft_tmp = (*thetaIntegralError > 0.0);
     }
-    if ((distanceRemaining > 50.0) &&
+    if (!rtIsNaN(thetaDerivativeError)) {
+      if (thetaDerivativeError < 0.0) {
+        thetaDerivativeError = -1.0;
+      } else {
+        thetaDerivativeError = (thetaDerivativeError > 0.0);
+      }
+    }
+    if ((distanceRemaining > 100.0) &&
         (*distanceDriven < sqrt(a * a + b_a * b_a)) &&
         (!(*waitingCommand != 0.0))) {
       *rightU = rt_roundd_snf(
-          ((theta + 1.0) + (sDistance + 1.0) / 2.0 * (double)u_p) +
-          ((double)dirIntegralControlLeft_tmp + 1.0) / 2.0 * delta_y);
+          ((theta + (dirProportionalControlLeft_tmp + 1.0) / 2.0 * delta_y) +
+           ((double)dirIntegralControlLeft_tmp + 1.0) / 2.0 * u_i) -
+          (thetaDerivativeError + 1.0) / 2.0 * u_d);
       /*  to minimize type casting error to int later */
-      *leftU = rt_roundd_snf((theta + (1.0 - sDistance) / 2.0 * (double)u_p) +
-                             (1.0 - (double)dirIntegralControlLeft_tmp) / 2.0 *
-                                 delta_y);
+      *leftU = rt_roundd_snf(
+          ((theta + (1.0 - dirProportionalControlLeft_tmp) / 2.0 * delta_y) +
+           (1.0 - (double)dirIntegralControlLeft_tmp) / 2.0 * u_i) -
+          (1.0 - thetaDerivativeError) / 2.0 * u_d);
+      /*  [uL,uR] must not exceed MAX value [50,50]. */
     } else {
       *rightU = 0.0;
       *leftU = 0.0;
@@ -264,6 +282,7 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
       *waitingCommand = 1.0;
     }
   }
+  *thetaError = leftover - 3.1415926535897931;
 }
 
 /*

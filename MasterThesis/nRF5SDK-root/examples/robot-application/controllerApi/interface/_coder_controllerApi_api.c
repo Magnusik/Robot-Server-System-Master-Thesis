@@ -5,7 +5,7 @@
  * File: _coder_controllerApi_api.c
  *
  * MATLAB Coder version            : 5.4
- * C/C++ source code generated on  : 09-May-2023 10:01:22
+ * C/C++ source code generated on  : 16-May-2023 19:42:06
  */
 
 /* Include Files */
@@ -107,13 +107,13 @@ static const mxArray *emlrt_marshallOut(const real_T u)
 }
 
 /*
- * Arguments    : const mxArray * const prhs[16]
+ * Arguments    : const mxArray * const prhs[17]
  *                int32_T nlhs
- *                const mxArray *plhs[9]
+ *                const mxArray *plhs[10]
  * Return Type  : void
  */
-void controllerApi_api(const mxArray *const prhs[16], int32_T nlhs,
-                       const mxArray *plhs[9])
+void controllerApi_api(const mxArray *const prhs[17], int32_T nlhs,
+                       const mxArray *plhs[10])
 {
   emlrtStack st = {
       NULL, /* site */
@@ -133,6 +133,7 @@ void controllerApi_api(const mxArray *const prhs[16], int32_T nlhs,
   real_T sThetaGyro;
   real_T setpointX;
   real_T setpointY;
+  real_T thetaError;
   real_T thetaIntegralError;
   real_T thetaprev;
   real_T ticksLeft;
@@ -162,11 +163,12 @@ void controllerApi_api(const mxArray *const prhs[16], int32_T nlhs,
   thetaIntegralError =
       emlrt_marshallIn(&st, emlrtAliasP(prhs[14]), "thetaIntegralError");
   delta_t = emlrt_marshallIn(&st, emlrtAliasP(prhs[15]), "delta_t");
+  thetaError = emlrt_marshallIn(&st, emlrtAliasP(prhs[16]), "thetaError");
   /* Invoke the target function */
   controllerApi(setpointX, setpointY, newCommand, &waitingCommand, ticksLeft,
                 ticksRight, &distanceDriven, &turning, xprev, yprev, thetaprev,
                 ddInitX, ddInitY, sThetaGyro, &thetaIntegralError, delta_t,
-                &gX_hat, &gY_hat, &gTheta_hat, &leftU, &rightU);
+                &thetaError, &gX_hat, &gY_hat, &gTheta_hat, &leftU, &rightU);
   /* Marshall function outputs */
   plhs[0] = emlrt_marshallOut(gX_hat);
   if (nlhs > 1) {
@@ -192,6 +194,9 @@ void controllerApi_api(const mxArray *const prhs[16], int32_T nlhs,
   }
   if (nlhs > 8) {
     plhs[8] = emlrt_marshallOut(thetaIntegralError);
+  }
+  if (nlhs > 9) {
+    plhs[9] = emlrt_marshallOut(thetaError);
   }
 }
 

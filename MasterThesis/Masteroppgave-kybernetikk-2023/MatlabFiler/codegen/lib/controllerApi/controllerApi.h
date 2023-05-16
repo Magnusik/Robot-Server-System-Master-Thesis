@@ -5,7 +5,7 @@
  * File: controllerApi.h
  *
  * MATLAB Coder version            : 5.4
- * C/C++ source code generated on  : 09-May-2023 10:01:22
+ * C/C++ source code generated on  : 16-May-2023 19:42:06
  */
 
 #ifndef CONTROLLERAPI_H
@@ -27,8 +27,9 @@ extern void controllerApi(double setpointX, double setpointY, double newCommand,
                           double *turning, double xprev, double yprev,
                           double thetaprev, double ddInitX, double ddInitY,
                           double sThetaGyro, double *thetaIntegralError,
-                          double delta_t, double *gX_hat, double *gY_hat,
-                          double *gTheta_hat, double *leftU, double *rightU);
+                          double delta_t, double *thetaError, double *gX_hat,
+                          double *gY_hat, double *gTheta_hat, double *leftU,
+                          double *rightU);
 
 #ifdef __cplusplus
 }

@@ -5,7 +5,7 @@
  * File: main.c
  *
  * MATLAB Coder version            : 5.4
- * C/C++ source code generated on  : 09-May-2023 10:01:22
+ * C/C++ source code generated on  : 16-May-2023 19:42:06
  */
 
 /*************************************************************************/
@@ -67,6 +67,7 @@ static void main_controllerApi(void)
   double leftU;
   double rightU;
   double setpointX_tmp;
+  double thetaError;
   double thetaIntegralError;
   double turning;
   double waitingCommand;
@@ -77,11 +78,13 @@ static void main_controllerApi(void)
   turning = setpointX_tmp;
   waitingCommand = setpointX_tmp;
   thetaIntegralError = setpointX_tmp;
+  thetaError = setpointX_tmp;
   controllerApi(setpointX_tmp, setpointX_tmp, setpointX_tmp, &waitingCommand,
                 setpointX_tmp, setpointX_tmp, &distanceDriven, &turning,
                 setpointX_tmp, setpointX_tmp, setpointX_tmp, setpointX_tmp,
                 setpointX_tmp, setpointX_tmp, &thetaIntegralError,
-                setpointX_tmp, &gX_hat, &gY_hat, &gTheta_hat, &leftU, &rightU);
+                setpointX_tmp, &thetaError, &gX_hat, &gY_hat, &gTheta_hat,
+                &leftU, &rightU);
 }
 
 /*

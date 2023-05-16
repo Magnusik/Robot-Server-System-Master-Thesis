@@ -11,7 +11,7 @@
     turning = 0;
     
     %%input arguments
-    setpointX = 1000;
+    setpointX = 3000;
     setpointY = 0;
     newCommand = 1;
     ticksRight = 100;
@@ -26,9 +26,10 @@
     delta_theta_gyro=0.6;
     thetaIntegralError=deg2rad(30);
     delta_t = 0.2;
+    thetaError = 0.2;
 
 
 
 
 [gX_hat,gY_hat,gTheta_hat,distanceDriven,leftU,rightU,turning,waitingCommand] = ...
-    controllerApi(setpointX,setpointY,newCommand,waitingCommand,ticksLeft,ticksRight,distanceDriven,turning,xprev,yprev,thetaprev,ddInitX,ddInitY,delta_theta_gyro,thetaIntegralError,delta_t);
+    controllerApi(setpointX,setpointY,newCommand,waitingCommand,ticksLeft,ticksRight,distanceDriven,turning,xprev,yprev,thetaprev,ddInitX,ddInitY,delta_theta_gyro,thetaIntegralError,delta_t,thetaError);

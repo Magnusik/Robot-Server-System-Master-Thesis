@@ -5,7 +5,7 @@
  * File: _coder_controllerApi_mex.c
  *
  * MATLAB Coder version            : 5.4
- * C/C++ source code generated on  : 09-May-2023 10:01:22
+ * C/C++ source code generated on  : 16-May-2023 19:42:06
  */
 
 /* Include Files */
@@ -45,28 +45,28 @@ emlrtCTX mexFunctionCreateRootTLS(void)
 
 /*
  * Arguments    : int32_T nlhs
- *                mxArray *plhs[9]
+ *                mxArray *plhs[10]
  *                int32_T nrhs
- *                const mxArray *prhs[16]
+ *                const mxArray *prhs[17]
  * Return Type  : void
  */
-void unsafe_controllerApi_mexFunction(int32_T nlhs, mxArray *plhs[9],
-                                      int32_T nrhs, const mxArray *prhs[16])
+void unsafe_controllerApi_mexFunction(int32_T nlhs, mxArray *plhs[10],
+                                      int32_T nrhs, const mxArray *prhs[17])
 {
   emlrtStack st = {
       NULL, /* site */
       NULL, /* tls */
       NULL  /* prev */
   };
-  const mxArray *outputs[9];
+  const mxArray *outputs[10];
   int32_T b_nlhs;
   st.tls = emlrtRootTLSGlobal;
   /* Check for proper number of arguments. */
-  if (nrhs != 16) {
-    emlrtErrMsgIdAndTxt(&st, "EMLRT:runTime:WrongNumberOfInputs", 5, 12, 16, 4,
+  if (nrhs != 17) {
+    emlrtErrMsgIdAndTxt(&st, "EMLRT:runTime:WrongNumberOfInputs", 5, 12, 17, 4,
                         13, "controllerApi");
   }
-  if (nlhs > 9) {
+  if (nlhs > 10) {
     emlrtErrMsgIdAndTxt(&st, "EMLRT:runTime:TooManyOutputArguments", 3, 4, 13,
                         "controllerApi");
   }

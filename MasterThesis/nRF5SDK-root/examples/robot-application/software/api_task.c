@@ -35,13 +35,13 @@ void vApiTask(void *arg){
     #define NO_TEST 0
 
     //MACROs for running different sequences
-    #define DEBUG 1
-    #define LOG 0
+    #define DEBUG 0
+    #define LOG 1
     #define TEST_TYPE LINE // SQUARE | LINE | NO_TEST
 
     // SQUARE test parameters
     #if (TEST_TYPE==SQUARE) 
-        int squareTestInterval = 30;
+        int squareTestInterval = 60;
         double xarrayPos[4*squareTestInterval];
         double yarrayPos[4*squareTestInterval];
         double xWaypoint1 = 300;
@@ -59,11 +59,11 @@ void vApiTask(void *arg){
 
     // run straight line test
     #if (TEST_TYPE==LINE)
-        double xWaypoint = 3000;
+        double xWaypoint = 1000;
         double yWaypoint = 0;
-        int lineTestInterval = 20;
-        double xarrayPos[lineTestInterval];
-        double yarrayPos[lineTestInterval];
+        int lineTestInterval = 150;
+        int xarrayPos[lineTestInterval];
+        int yarrayPos[lineTestInterval];
     #endif
 
     #if (TEST_TYPE==NO_TEST)
@@ -104,7 +104,9 @@ void vApiTask(void *arg){
     double ddInitY = 0;
     gTheta_hat = thetaprev;
     double thetaIntegralError = 0;
+    double thetaError = 0;
 
+    //IMU calibration
     bool calibration = 1;
     TickType_t ticks_since_startup = xTaskGetTickCount();
     double offsetGyroX = 0;
@@ -120,6 +122,7 @@ void vApiTask(void *arg){
     int counter = 0;
     int uL = 0;
     int uR = 0;
+    float time_since_startup = 0;
 
     // used to display variables on OLED screen
     char test[128];
@@ -129,11 +132,12 @@ void vApiTask(void *arg){
 
     while (true) {
 
-        vTaskDelay(200);
+        //vTaskDelay(200);
         taskYIELD();
         TickType_t ticks_since_startup_prev = ticks_since_startup;
         ticks_since_startup = xTaskGetTickCount();
 		float delta_t = (ticks_since_startup - ticks_since_startup_prev)*1.0 / configTICK_RATE_HZ;
+        time_since_startup = time_since_startup+delta_t;
         // double X_hat = gX_hat;
         // double Y_hat = gY_hat;
         // double Theta_hat = gTheta_hat;
@@ -160,6 +164,7 @@ void vApiTask(void *arg){
         delta_theta_gyro = gyro_z*delta_t;
         if(!calibration && IMU_new_data() && (gyro_z>GYRO_MIN || gyro_z<-GYRO_MIN )){
             gyroAngleZ=gyroAngleZ+delta_theta_gyro;
+    
         }
         
         gyro_z_prev =gyro_z;
@@ -168,7 +173,7 @@ void vApiTask(void *arg){
         // double accel_y = accel.y; 
         // double accel_z = accel.z;
 
-        #if (DEBUG)
+        #if (DEBUG) //Printed to COM port via USB
         {
             //TICKS
             //printf("\r\nTicks Left: %f Ticks Right: %f\n\r",(float)ticks_Left_preHandshake,(float)ticks_Right_preHandshake);
@@ -193,11 +198,14 @@ void vApiTask(void *arg){
             //printf("\r\n gXhat: %f gYhat: %f gTheta: %f\n\r",gX_hat,(float)gY_hat,(float)radToDeg*gTheta_hat);
             
             //GYRO VALUES
-            printf("\r\n gyroX: %f gyroY: %f gyroZ: %f\n\r",(float)gyro_x,(float)gyro_y,(float)gyro_z);
-            printf("\r\n test angle: %f\n\r",(float)gyroAngleZ);
+            //printf("\r\n gyroX: %f gyroY: %f gyroZ: %f\n\r",(float)gyro_x,(float)gyro_y,(float)gyro_z);
+            //printf("\r\n test angle: %f\n\r",(float)gyroAngleZ);
             //printf("\r\n%f %f %f\n\r",(float)gyro_x,(float)gyro_y,(float)gyro_z);
             //printf("\r\n%f %f %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
             //printf("\r\n accelX: %f accelY: %f accelZ: %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
+
+            //scope random value
+            printf("\r\n Random value : %f \n\r",(float)time_since_startup);
         }
         #endif
 
@@ -244,7 +252,7 @@ void vApiTask(void *arg){
                    &distanceDriven, &turning, xprev,
                    yprev, thetaprev, ddInitX,
                    ddInitY, delta_theta_gyro,
-                   &thetaIntegralError, delta_t,
+                   &thetaIntegralError, delta_t,&thetaError,
                    &gX_hat, &gY_hat, &gTheta_hat,
                    &leftU, &rightU);
 
@@ -253,31 +261,46 @@ void vApiTask(void *arg){
 
             //SQUARE test MACRO
             #if (TEST_TYPE==SQUARE)
-            {
-                if (counter==squareTestInterval){
-                    xWaypoint=xWaypoint2;
-                    yWaypoint=yWaypoint2;
-                    
-                    newCommand=1;
+            {   
+                if(time_since_startup>1&&time_since_startup<10){
+                    if (xWaypoint !=xWaypoint1 || yWaypoint!=yWaypoint1){newCommand=1;}
+                    xWaypoint=xWaypoint1;
+                    yWaypoint=yWaypoint1;
                 }
 
-                if (counter ==2*squareTestInterval){
+                if (time_since_startup>10 && time_since_startup<20){
+                    
+                    if (xWaypoint !=xWaypoint2 || yWaypoint!=yWaypoint2){
+                        newCommand=1;
+                        xWaypoint=xWaypoint2;
+                        yWaypoint=yWaypoint2;
+                    }
+                }
+
+                if (time_since_startup>20 && time_since_startup<30){
+
+                    if (xWaypoint !=xWaypoint3 || yWaypoint!=yWaypoint3){
+                newCommand=1;    
                 xWaypoint=xWaypoint3;
                 yWaypoint=yWaypoint3;
-                newCommand=1;
-                }
-                if (counter == 3*squareTestInterval){
-                    xWaypoint=xWaypoint4;
-                    yWaypoint=yWaypoint4;
-                    newCommand =1;
+                    }
                 }
 
-                if (counter==4*squareTestInterval){
+                if (time_since_startup>30 && time_since_startup<40){
+                    if (xWaypoint !=xWaypoint4 || yWaypoint!=yWaypoint4){
+                        newCommand=1;
+                        xWaypoint=xWaypoint4;
+                        yWaypoint=yWaypoint4;
+                    }
+
+                }
+
+                if (time_since_startup>40){
                         leftU  = 0;
                         rightU = 0;
                     }
 
-                if(counter == 300 && LOG){
+                if(time_since_startup>50 && LOG){ //to be continued
                     int i;
                     for(i = 0; i<4*squareTestInterval; ++i){
                             printf("\r\n%f %f\n\r",(float)xarrayPos[i],(float)yarrayPos[i]);
@@ -290,13 +313,15 @@ void vApiTask(void *arg){
         //LINE test LOG MACRO
         #if(TEST_TYPE==LINE && LOG)
         {
-            if(counter == 150){
+            if(counter == 300){
                 int i;
-                for(i = 0; i<lineTestInterval; ++i){
+                for(i = 50; i<lineTestInterval; ++i){
                         printf("\r\n%f %f\n\r",(float)xarrayPos[i],(float)yarrayPos[i]);
                         vTaskDelay(10);
             }
+            
         }
+        if(counter == 151){printf("\r\n%f \n\r",(float)distanceDriven);}
         }
         #endif
 
@@ -331,8 +356,8 @@ void vApiTask(void *arg){
         #if (TEST_TYPE==LINE && LOG)
         {
             if (counter<=lineTestInterval){
-                xarrayPos[counter-1] = xprev;
-                yarrayPos[counter-1] = yprev;
+                xarrayPos[counter-1] = (int)xprev;
+                yarrayPos[counter-1] = (int)yprev;
             }
         }
         #endif
@@ -370,7 +395,7 @@ void vApiTask(void *arg){
                    &distanceDriven, &turning, xprev,
                    yprev, thetaprev, ddInitX,
                    ddInitY, delta_theta_gyro,
-                   &thetaIntegralError, delta_t,
+                   &thetaIntegralError, delta_t,&thetaError,
                    &gX_hat, &gY_hat, &gTheta_hat,
                    &leftU, &rightU);
 
