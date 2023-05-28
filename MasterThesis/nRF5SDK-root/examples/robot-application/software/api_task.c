@@ -18,6 +18,7 @@
 
 #include "motor.h"
 #include "../drivers/display.h"
+#include <stdio.h>
 
 
 
@@ -37,29 +38,28 @@ void vApiTask(void *arg){
     //MACROs for running different sequences
     #define DEBUG 0
     #define LOG 1
-    #define TEST_TYPE LINE // SQUARE | LINE | NO_TEST
+    #define TEST_TYPE SQUARE // SQUARE | LINE | NO_TEST
 
     // SQUARE test parameters
-    #if (TEST_TYPE==SQUARE) 
-        int squareTestInterval = 60;
-        double xarrayPos[4*squareTestInterval];
-        double yarrayPos[4*squareTestInterval];
-        double xWaypoint1 = 300;
+    #if (TEST_TYPE==SQUARE)
+        int squareTestInterval = 150; 
+        int xarrayPos[150] = {0};
+        int yarrayPos[150] = {0};
+        double xWaypoint1 = 1000;
         double yWaypoint1 = 0;
-        double xWaypoint2 = 300;
-        double yWaypoint2 = 300;
+        double xWaypoint2 = 1000;
+        double yWaypoint2 = 1000;
         double xWaypoint3 = 0;
-        double yWaypoint3 = 300;
+        double yWaypoint3 = 1000;
         double xWaypoint4 = 0;
         double yWaypoint4 = 0;
-
         double xWaypoint  = xWaypoint1;
         double yWaypoint = yWaypoint1;
     #endif
 
     // run straight line test
     #if (TEST_TYPE==LINE)
-        double xWaypoint = 1000;
+        double xWaypoint = 3000;
         double yWaypoint = 0;
         int lineTestInterval = 150;
         int xarrayPos[lineTestInterval];
@@ -129,6 +129,11 @@ void vApiTask(void *arg){
     char test2[128];
     char test3[128];
     char test4[128];
+
+    //Logging
+    float log_loop_variable=1;
+    int log_loop=0;
+    int log_guard=0;
 
     while (true) {
 
@@ -205,7 +210,7 @@ void vApiTask(void *arg){
             //printf("\r\n accelX: %f accelY: %f accelZ: %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
 
             //scope random value
-            printf("\r\n Random value : %f \n\r",(float)time_since_startup);
+            //printf("\r\n Random value : %f \n\r",(float)time_since_startup);
         }
         #endif
 
@@ -234,14 +239,13 @@ void vApiTask(void *arg){
         //  Displaying variables on OLED screen
         // Keep in mind that this action may slow down the system affecting the time constant of the system.
         // Use it mainly for debugging.
-
         // sprintf(test, "X: %i Y: %i", (int)gX_hat, (int)gY_hat); 
-        // sprintf(test2, "Left: %f", (float)total_ticks_l_preHandshake);  
-        // sprintf(test3, "Right: %f", (float)total_ticks_r_preHandshake);  
-        // sprintf(test4, "Theta: %f", (float)gTheta_hat);  
         // display_text_on_line(1, test);
+        // sprintf(test2, "Left: %f", (float)total_ticks_l_preHandshake); 
         // display_text_on_line(2, test2);
+        // sprintf(test3, "Right: %f", (float)total_ticks_r_preHandshake);  
         // display_text_on_line(3, test3);
+        // sprintf(test4, "Theta: %f", (float)gTheta_hat); 
         // display_text_on_line(4, test4);
             
             
@@ -263,7 +267,8 @@ void vApiTask(void *arg){
             #if (TEST_TYPE==SQUARE)
             {   
                 if(time_since_startup>1&&time_since_startup<10){
-                    if (xWaypoint !=xWaypoint1 || yWaypoint!=yWaypoint1){newCommand=1;}
+                    if (xWaypoint !=xWaypoint1 || yWaypoint!=yWaypoint1)
+                    newCommand=1;
                     xWaypoint=xWaypoint1;
                     yWaypoint=yWaypoint1;
                 }
@@ -295,33 +300,46 @@ void vApiTask(void *arg){
 
                 }
 
-                if (time_since_startup>40){
+                if (time_since_startup>50){
                         leftU  = 0;
                         rightU = 0;
                     }
 
-                if(time_since_startup>50 && LOG){ //to be continued
-                    int i;
-                    for(i = 0; i<4*squareTestInterval; ++i){
-                            printf("\r\n%f %f\n\r",(float)xarrayPos[i],(float)yarrayPos[i]);
-                            vTaskDelay(10);
-                    }
-                }
             }
             #endif
+
+        //Square test log MACRO
+        #if (TEST_TYPE == SQUARE && LOG)
+        {
+        if(time_since_startup>50 && LOG && !log_guard){
+                    log_guard=1;
+                    int i;
+                    for(i = 0; i<squareTestInterval; ++i){
+                            if((float)fabs(xarrayPos[i])<10000 && (float)fabs(xarrayPos[i])<10000){
+                            printf("\r\n%i %i\n\r",(int)xarrayPos[i],(int)yarrayPos[i]);
+                            vTaskDelay(10);
+                            }
+                    }
+        }
+        }
+        #endif
+        
+
+
 
         //LINE test LOG MACRO
         #if(TEST_TYPE==LINE && LOG)
         {
-            if(counter == 300){
+            if(time_since_startup>20 && !log_guard){
+                log_guard = 1;
                 int i;
-                for(i = 50; i<lineTestInterval; ++i){
-                        printf("\r\n%f %f\n\r",(float)xarrayPos[i],(float)yarrayPos[i]);
+                for(i = 0; i<lineTestInterval; ++i){
+                        if((int)fabs(xarrayPos[i])<10000 && (int)fabs(xarrayPos[i])<10000)
+                        {printf("\r\n%i %i\n\r",(int)xarrayPos[i],(int)yarrayPos[i]);}
                         vTaskDelay(10);
             }
             
         }
-        if(counter == 151){printf("\r\n%f \n\r",(float)distanceDriven);}
         }
         #endif
 
@@ -342,23 +360,18 @@ void vApiTask(void *arg){
         yprev     = gY_hat;
         thetaprev = gTheta_hat;
 
-        // SQUARE test LOG MACRO
-        #if (TEST==SQUARE && LOG)
-        {
-            if (counter<4*squareTestInterval){
-                xarrayPos[counter-1] = xprev;
-                yarrayPos[counter-1] = yprev;
-            }
-        }
-        #endif
 
-        // LINE test LOG MACRO
-        #if (TEST_TYPE==LINE && LOG)
-        {
-            if (counter<=lineTestInterval){
-                xarrayPos[counter-1] = (int)xprev;
-                yarrayPos[counter-1] = (int)yprev;
+        // LOG MACRO logs position every 0.4 seconds
+        #if (LOG)
+        {   
+            log_loop_variable = log_loop_variable + delta_t;
+            if (log_loop_variable>0.4 && log_loop<150){
+                log_loop +=1;
+                xarrayPos[log_loop-1] = (int)xprev;
+                yarrayPos[log_loop-1] = (int)yprev;
+                log_loop_variable=log_loop_variable-0.4;
             }
+
         }
         #endif
 

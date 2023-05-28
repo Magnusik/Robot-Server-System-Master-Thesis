@@ -10,7 +10,7 @@ prev = [xprev,yprev,thetaprev];
 
 [xHat, sDistance] = estimator(Encoder,prev,turning,sThetaGyro);
 
-[uL, uR,distanceDriven,turning,waitingCommand,thetaIntegralError,thetaError] = regulator(xHat,setpoint,turning,sDistance,distanceDriven,ddInit,waitingCommand,thetaIntegralError,delta_t,thetaError);
+[uL, uR,distanceDriven,turning,waitingCommand,thetaIntegralError,thetaError] = regulator(xHat,setpoint,turning,sDistance,distanceDriven,ddInit,waitingCommand,thetaIntegralError,delta_t,thetaError,newCommand);
 
 gX_hat = xHat(1);
 gY_hat = xHat(2);

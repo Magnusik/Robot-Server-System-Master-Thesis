@@ -5,7 +5,7 @@
  * File: controllerApi.c
  *
  * MATLAB Coder version            : 5.4
- * C/C++ source code generated on  : 16-May-2023 19:42:06
+ * C/C++ source code generated on  : 28-May-2023 20:34:53
  */
 
 /* Include Files */
@@ -125,7 +125,6 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
   double theta;
   double thetaDerivativeError;
   double u_i;
-  (void)newCommand;
   /*  Calculation of current position and orientation [x_hat, y_hat, theta_hat],
    * and distance moved during this sample */
   /*    Detailed explanation goes here */
@@ -190,6 +189,11 @@ void controllerApi(double setpointX, double setpointY, double newCommand,
   /* Derivative Error */
   thetaDerivativeError =
       ((leftover - 3.1415926535897931) - *thetaError) / delta_t;
+  if (newCommand != 0.0) {
+    thetaDerivativeError = 0.0;
+    /*  To prevent a unintended high contribution from derivative term after
+     * rotation. */
+  }
   /* Integral Error */
   /*  saturation of integralerror to +-20 degrees */
   *thetaIntegralError =

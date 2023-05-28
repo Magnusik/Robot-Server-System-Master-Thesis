@@ -1,6 +1,6 @@
 fileID = fopen('P5_I10.txt','r');
 
-
+axis equal
 tline=fgetl(fileID);
 %headers = strsplit(tline,','); kan brukes for å fjerne headers (fjerner
 %første linje

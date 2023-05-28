@@ -1,4 +1,4 @@
-function [uL,uR,distanceDriven,turning,waitingCommand,thetaIntegralError,thetaError] = regulator(xHat,setpoint,turning,sDistance,distanceDriven,ddInit,waitingCommand,thetaIntegralError,delta_t,thetaError)
+function [uL,uR,distanceDriven,turning,waitingCommand,thetaIntegralError,thetaError] = regulator(xHat,setpoint,turning,sDistance,distanceDriven,ddInit,waitingCommand,thetaIntegralError,delta_t,thetaError,newCommand)
 %Returns the inputs to the Left and Right motors
 % xHat = [x_hat, y_hat, theta_hat] ~ [mm,mm,rad]
 % setpoint = [x_d, y_d] ~ [mm,mm]
@@ -37,15 +37,19 @@ theta_target = atan2(delta_y,delta_x);
 
 %Proportional Error
 thetaErrorPrev = thetaError;
+
 thetaError = modulus(theta_target-theta_0+pi,2*pi)-pi; %%smallest signed angle
 rad2deg(thetaError)
 
 %Derivative Error
 thetaDerivativeError = (thetaError -thetaErrorPrev)/delta_t;
+if newCommand
+    thetaDerivativeError = 0; % To prevent a unintended high contribution from derivative term after rotation.
+end
 
 %Integral Error
 thetaIntegralError=min(thetaIntegralError+thetaError,deg2rad(20)); % saturation of integralerror to +-20 degrees
-thetaIntegralError=max(thetaIntegralError,deg2rad(-20)); 
+thetaIntegralError=max(thetaIntegralError,deg2rad(-20));
 
 
 if turning
