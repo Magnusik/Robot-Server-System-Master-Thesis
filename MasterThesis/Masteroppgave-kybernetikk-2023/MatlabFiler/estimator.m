@@ -7,7 +7,7 @@ function [xHat, sDistance] = estimator(Encoder,prev,turning,sThetaGyro)
 % sThetaGyro[rad]                 ~ theta increment from gyroscope
 % turning   [bool]                ~ is the robot in rotating mode?
 % sDistance [mm]                  ~ distance travelled since last cycle
-% prev      [mm,mm,rad            ~ the previous iteration from xHat
+% prev      [mm,mm,rad]           ~ the previous iteration from xHat
 % xHat      [mm,mm,rad]           ~ the current estimate pose [x,y,theta]
 % -------------------------------------------------------------------------
 

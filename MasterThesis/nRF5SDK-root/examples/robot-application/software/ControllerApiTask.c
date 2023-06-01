@@ -20,10 +20,6 @@
 #include "../drivers/display.h"
 #include <stdio.h>
 
-
-
-
-
 void vControllerApiTask(void *arg){
 
     //Constants

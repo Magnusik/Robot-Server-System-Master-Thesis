@@ -1,5 +1,3 @@
-
-
 fileID = fopen('motive_P20_I20_D0.txt','r');
 fileID2 =fopen('estimates_P20_I20_D0.txt');
 
