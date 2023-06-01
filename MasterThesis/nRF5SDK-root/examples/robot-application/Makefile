@@ -141,32 +141,20 @@ SRC_FILES += \
   $(PROJ_DIR)/mqtt_communication/mqtt_dongle_legacy.c \
   $(PROJ_DIR)/mqtt_communication/mqtt.c \
   $(PROJ_DIR)/software/DisplayTask.c \
-  $(PROJ_DIR)/software/ControllerTask.c \
-  $(PROJ_DIR)/software/EstimatorTask.c \
-  $(PROJ_DIR)/software/NewEstimatorTask.c \
-  $(PROJ_DIR)/software/KalmanFilter.c \
-  $(PROJ_DIR)/software/ExtendedKalmanFilter.c \
   $(PROJ_DIR)/software/MainComTask.c \
-  $(PROJ_DIR)/software/matrix_operations.c \
   $(PROJ_DIR)/software/SensorTowerTask.c \
   $(PROJ_DIR)/software/positionEstimate.c \
-  $(PROJ_DIR)/software/PID_controller.c \
-  $(PROJ_DIR)/software/PID.c \
-  $(PROJ_DIR)/software/MotorSpeedControllerTask.c \
-  $(PROJ_DIR)/test_functions/IMUTester.c \
-  $(PROJ_DIR)/test_functions/EncoderTester.c \
-  $(PROJ_DIR)/test_functions/EncoderWithCounterTester.c \
   $(PROJ_DIR)/test_functions/SensorTowerTester.c \
   $(PROJ_DIR)/test_functions/DebugFunctions.c \
   $(PROJ_DIR)/motor_gen/motor_gen.c \
-  $(PROJ_DIR)/controllerApi/controllerApi.c \
-  $(PROJ_DIR)/controllerApi/controllerApi_data.c \
-  $(PROJ_DIR)/controllerApi/controllerApi_initialize.c \
-  $(PROJ_DIR)/controllerApi/controllerApi_terminate.c \
-  $(PROJ_DIR)/controllerApi/rt_nonfinite.c \
-  $(PROJ_DIR)/controllerApi/rtGetInf.c \
-  $(PROJ_DIR)/controllerApi/rtGetNaN.c \
-  $(PROJ_DIR)/software/api_task.c \
+  $(PROJ_DIR)/controller_api/controller_api.c \
+  $(PROJ_DIR)/controller_api/controller_api_data.c \
+  $(PROJ_DIR)/controller_api/controller_api_initialize.c \
+  $(PROJ_DIR)/controller_api/controller_api_terminate.c \
+  $(PROJ_DIR)/controller_api/rt_nonfinite.c \
+  $(PROJ_DIR)/controller_api/rtGetInf.c \
+  $(PROJ_DIR)/controller_api/rtGetNaN.c \
+  $(PROJ_DIR)/software/ControllerApiTask.c \
 # Include folders common to all targets
 INC_FOLDERS += \
   $(PROJ_DIR)/config \
@@ -330,7 +318,7 @@ INC_FOLDERS += \
   $(PROJ_DIR)/software \
   $(PROJ_DIR)/test_functions \
   $(PROJ_DIR)/motor_gen \
-  $(PROJ_DIR)/controllerApi \
+  $(PROJ_DIR)/controller_api \
 
 # Libraries common to all targets
 LIB_FILES += \

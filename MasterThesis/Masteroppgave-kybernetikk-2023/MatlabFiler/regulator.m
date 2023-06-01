@@ -60,11 +60,11 @@ thetaIntegralError=max(thetaIntegralError,deg2rad(-20));
 
 if turning
     u = 12;
-    [uL, uR,turning] = rotateRobot(thetaError,thetaEstimateNow,angleThreshold,u);
+    [uL, uR,turning] = rotate_robot(thetaError,angleThreshold,u);
     distanceDriven = 0;
 else
     u = min(30,(10+distanceRemaining/200)); %Input slows down depending on distance remaining to target
-    [uL, uR] = moveForward(thetaError,distanceRemaining,distanceDriven,destinationZone,maxDistanceTarget,u,waitingCommand,thetaIntegralError,sTime,thetaDerivativeError);
+    [uL, uR] = move_forward(thetaError,distanceRemaining,distanceDriven,destinationZone,maxDistanceTarget,u,waitingCommand,thetaIntegralError,sTime,thetaDerivativeError);
     if (uL == 0) && (uR == 0) % Needed to idle the robot
         waitingCommand = 1;
     end

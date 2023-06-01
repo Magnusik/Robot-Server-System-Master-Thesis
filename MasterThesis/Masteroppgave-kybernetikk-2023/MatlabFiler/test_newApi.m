@@ -32,4 +32,4 @@
 
 
 [gX_hat,gY_hat,gTheta_hat,distanceDriven,leftU,rightU,turning,waitingCommand] = ...
-    controllerApi(setpointX,setpointY,newCommand,waitingCommand,ticksLeft,ticksRight,distanceDriven,turning,xprev,yprev,thetaprev,ddInitX,ddInitY,delta_theta_gyro,thetaIntegralError,delta_t,thetaError);
+    controller_api(setpointX,setpointY,newCommand,waitingCommand,ticksLeft,ticksRight,distanceDriven,turning,xprev,yprev,thetaprev,ddInitX,ddInitY,delta_theta_gyro,thetaIntegralError,delta_t,thetaError);

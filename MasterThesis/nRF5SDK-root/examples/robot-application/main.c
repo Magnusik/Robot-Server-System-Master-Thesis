@@ -45,9 +45,9 @@
 
 // Project files
 
-// Matlab generated
-#include "api_task.h"
-#include "motor_gen.h"
+// Task containing Matlab generated C code
+#include "ControllerApiTask.h"
+
 
 //Communication
 #include "arq.h"
@@ -78,18 +78,11 @@
 //Software
 #include "DebugFunctions.h"
 #include "SensorTowerTask.h"
-#include "ControllerTask.h"
-#include "EstimatorTask.h"
-// #include "NewEstimatorTask.h"
 #include "MainComTask.h"
 #include "globals.h"
-#include "EncoderTester.h"
-#include "EncoderWithCounterTester.h"
-#include "IMUTester.h"
 #include "SensorTowerTester.h"
 
 #include "positionEstimate.h"
-#include "MotorSpeedControllerTask.h"
 
 #include "robot_config.h"
 
@@ -131,9 +124,6 @@ TaskHandle_t handle_display_task,
     communication_task,
     sensor_tower_task,
     arq_task,
-    imu_tester,
-    encoder_tester,
-    // encoder_with_counter_tester,
     sensor_tower_tester,
     handle_api;
 
@@ -367,29 +357,6 @@ int main(void) {
      *Tasks used for testing drivers and hardware
      * Not to be used in final application
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-    /*
-	if (pdPASS != xTaskCreate(IMU_tester, "IMU_Test", 256, NULL, 1 ,&imu_tester)){
-        APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
-    }
-    */
-    /*
-    if (pdPASS != xTaskCreate(Encoder_tester, "Encoder Test", 256, NULL, 1, &encoder_tester)){
-        APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
-    }
-    */
-    
-    /*
-    if (pdPASS != xTaskCreate(Encoder_tester_2, "Encoder Cnt Test", 256, NULL, 1, &encoder_with_counter_tester)){
-        APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
-    } 
-    */
-    
-    /*
-	if (pdPASS != xTaskCreate(IMU_tester, "IMU_Test", 256, NULL, 1 ,&imu_tester)){
-        APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
-    }
-    */
    /*
     if (pdPASS != xTaskCreate(Sensortower_tester, "SensortowerTest", 256, NULL, 1, &sensor_tower_tester)){
         APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
@@ -406,14 +373,7 @@ int main(void) {
     if (pdPASS != xTaskCreate(microsd_task, "SD", 256, NULL, 2, &handle_microsd_task))
         APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
 
-    if(USE_SPEED_CONTROLLER)
-    {
-        if (pdPASS != xTaskCreate(vMotorSpeedControllerTask, "SPEED", 256, NULL, 2, &motor_speed_controller_task))
-            APP_ERROR_HANDLER(NRF_ERROR_NO_MEM); 
-
-    }
-
-    if (pdPASS != xTaskCreate(vApiTask, "API", 256, NULL, 1, &handle_api))
+    if (pdPASS != xTaskCreate(vControllerApiTask, "ControllerAPI", 256, NULL, 1, &handle_api))
         APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
     
     if (pdPASS != xTaskCreate(vMainSensorTowerTask, "SnsT", 256, NULL, 1, &sensor_tower_task))

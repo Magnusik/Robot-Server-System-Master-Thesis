@@ -162,13 +162,7 @@ _build/nrf52840_xxaa/main.c.o: main.c \
  ../../modules/nrfx/hal/nrf_twi.h \
  ../../components/libraries/queue/nrf_queue.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\math.h \
- software/api_task.h motor_gen/motor_gen.h motor_gen/rtwtypes.h \
- motor_gen/tmwtypes.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include-fixed\limits.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include-fixed\syslimits.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\limits.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\float.h \
- motor_gen/motor_gen_types.h ble_communication/arq.h \
+ software/ControllerApiTask.h ble_communication/arq.h \
  ble_communication/bluetooth.h ble_communication/network.h \
  ble_communication/server_communication.h drivers/defines.h \
  config/robot_config.h ../../modules/nrfx/drivers/include/nrfx_saadc.h \
@@ -190,12 +184,9 @@ _build/nrf52840_xxaa/main.c.o: main.c \
  drivers/ICM_20948_REGISTERS.h drivers/ICM_20948_ENUMERATIONS.h \
  drivers/AK09916_ENUMERATIONS.h drivers/functions.h \
  test_functions/DebugFunctions.h software/SensorTowerTask.h \
- software/ControllerTask.h software/EstimatorTask.h \
- software/MainComTask.h software/globals.h test_functions/EncoderTester.h \
- test_functions/EncoderWithCounterTester.h test_functions/IMUTester.h \
+ software/MainComTask.h software/globals.h \
  test_functions/SensorTowerTester.h software/positionEstimate.h \
- c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\stdint-gcc.h \
- software/MotorSpeedControllerTask.h software/globals.h
+ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\stdint-gcc.h
 
 c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\stdint.h:
 
@@ -533,23 +524,7 @@ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-ea
 
 c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\math.h:
 
-software/api_task.h:
-
-motor_gen/motor_gen.h:
-
-motor_gen/rtwtypes.h:
-
-motor_gen/tmwtypes.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include-fixed\limits.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include-fixed\syslimits.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\limits.h:
-
-c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\float.h:
-
-motor_gen/motor_gen_types.h:
+software/ControllerApiTask.h:
 
 ble_communication/arq.h:
 
@@ -631,26 +606,12 @@ test_functions/DebugFunctions.h:
 
 software/SensorTowerTask.h:
 
-software/ControllerTask.h:
-
-software/EstimatorTask.h:
-
 software/MainComTask.h:
 
 software/globals.h:
-
-test_functions/EncoderTester.h:
-
-test_functions/EncoderWithCounterTester.h:
-
-test_functions/IMUTester.h:
 
 test_functions/SensorTowerTester.h:
 
 software/positionEstimate.h:
 
 c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\lib\gcc\arm-none-eabi\6.3.1\include\stdint-gcc.h:
-
-software/MotorSpeedControllerTask.h:
-
-software/globals.h:
