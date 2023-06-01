@@ -1,7 +1,11 @@
 function [gX_hat,gY_hat,gTheta_hat,distanceDriven,leftU,rightU,turning,waitingCommand,thetaIntegralError,thetaError] = ...
     controllerApi(setpointX,setpointY,newCommand,waitingCommand,ticksLeft,ticksRight,distanceDriven,turning,xprev,yprev,thetaprev,ddInitX,ddInitY,sThetaGyro,thetaIntegralError,delta_t,thetaError)
-%changes global states and returns input to the motors
-% 
+% This function changes global states and returns input to the motors.
+% FUNCTION  ~ Description
+% -------------------------------------------------------------------------
+% estimator() ~ makes an estimate of the position and orientation 
+% regulator() ~ returns input to the DC motor drivers
+% -------------------------------------------------------------------------
 
 setpoint = [setpointX,setpointY];
 Encoder = [ticksLeft,ticksRight];

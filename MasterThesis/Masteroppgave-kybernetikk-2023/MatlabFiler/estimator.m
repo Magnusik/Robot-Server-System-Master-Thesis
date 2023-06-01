@@ -1,6 +1,15 @@
 function [xHat, sDistance] = estimator(Encoder,prev,turning,sThetaGyro)
-% Calculation of current position and orientation [x_hat, y_hat, theta_hat], and distance moved during this sample
-%   Detailed explanation goes here
+% Estimates position and orientation [x_hat, y_hat, theta_hat]
+% Returns xHat
+% VARIABLE   [UNITS] [RANGE]      ~  Description
+% -------------------------------------------------------------------------
+% Encoder   [int,int]             ~ wheel encoder ticks
+% sThetaGyro[rad]                 ~ theta increment from gyroscope
+% turning   [bool]                ~ is the robot in rotating mode?
+% sDistance [mm]                  ~ distance travelled since last cycle
+% prev      [mm,mm,rad            ~ the previous iteration from xHat
+% xHat      [mm,mm,rad]           ~ the current estimate pose [x,y,theta]
+% -------------------------------------------------------------------------
 
 %Constants  [ticks], [mm]
 nTicks               = 300;
