@@ -155,6 +155,7 @@ SRC_FILES += \
   $(PROJ_DIR)/controller_api/rtGetInf.c \
   $(PROJ_DIR)/controller_api/rtGetNaN.c \
   $(PROJ_DIR)/software/ControllerApiTask.c \
+  $(PROJ_DIR)/software/ControllerApiTesterTask.c \
 # Include folders common to all targets
 INC_FOLDERS += \
   $(PROJ_DIR)/config \

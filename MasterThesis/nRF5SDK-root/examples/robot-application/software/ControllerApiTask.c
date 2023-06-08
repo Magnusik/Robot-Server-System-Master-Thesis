@@ -26,48 +26,6 @@ void vControllerApiTask(void *arg){
     #define COMPLETE 0
     #define GYRO_MIN 0.25
 
-    //MACRO variables
-    #define SQUARE 1
-    #define LINE 2
-    #define NO_TEST 0
-
-    //MACROs for running different sequences
-    #define DEBUG 0
-    #define LOG 1
-    #define TEST_TYPE SQUARE // SQUARE | LINE | NO_TEST
-
-    // SQUARE test parameters
-    #if (TEST_TYPE==SQUARE)
-        int squareTestInterval = 150; 
-        int xarrayPos[150] = {0};
-        int yarrayPos[150] = {0};
-        double xWaypoint1 = 1000;
-        double yWaypoint1 = 0;
-        double xWaypoint2 = 1000;
-        double yWaypoint2 = 1000;
-        double xWaypoint3 = 0;
-        double yWaypoint3 = 1000;
-        double xWaypoint4 = 0;
-        double yWaypoint4 = 0;
-        double xWaypoint  = xWaypoint1;
-        double yWaypoint = yWaypoint1;
-    #endif
-
-    // run straight line test
-    #if (TEST_TYPE==LINE)
-        double xWaypoint = 3000;
-        double yWaypoint = 0;
-        int lineTestInterval = 150;
-        int xarrayPos[lineTestInterval];
-        int yarrayPos[lineTestInterval];
-    #endif
-
-    #if (TEST_TYPE==NO_TEST)
-        double xWaypoint=0;
-        double yWaypoint=0;
-    #endif
-
-
     vServo_setAngle(0);
 
     struct sCartesian Setpoint = {0, 0};
@@ -76,15 +34,13 @@ void vControllerApiTask(void *arg){
     double gTheta_hat = 0.0;
     double leftU = 0.0;
     double rightU = 0.0;
-    double ticks_Left = 0;
-    double ticks_Right = 0;
     uint8_t robotMovement = moveStop;
 
-    //prehandshake
-    double ticks_Left_preHandshake      = 0;
-    double ticks_Right_preHandshake     = 0;
-    double total_ticks_r_preHandshake   = 0;
-    double total_ticks_l_preHandshake   = 0;
+    //Wheel encoder
+    double ticks_Left     = 0;
+    double ticks_Right     = 0;
+    double total_ticks_r   = 0;
+    double total_ticks_l   = 0;
 
     //new controllerApi
     double turning=1;
@@ -115,23 +71,9 @@ void vControllerApiTask(void *arg){
 
 
     //init test parameters
-    int counter = 0;
     int uL = 0;
     int uR = 0;
     float time_since_startup = 0;
-
-    // used to display variables on OLED screen
-    char test[128];
-    char test2[128];
-    char test3[128];
-    char test4[128];
-
-    //Logging
-    float log_loop_variable=1;
-    int log_loop=0;
-    int log_guard=0;
-
-
 
 
     while (true) {
@@ -142,9 +84,6 @@ void vControllerApiTask(void *arg){
         ticks_since_startup = xTaskGetTickCount();
 		float delta_t = (ticks_since_startup - ticks_since_startup_prev)*1.0 / configTICK_RATE_HZ;
         time_since_startup = time_since_startup+delta_t;
-        // double X_hat = gX_hat;
-        // double Y_hat = gY_hat;
-        // double Theta_hat = gTheta_hat;
 
         //Read IMU data 
         IMU_reading_t gyro;
@@ -178,317 +117,76 @@ void vControllerApiTask(void *arg){
         // double accel_y = accel.y; 
         // double accel_z = accel.z;
 
-        #if (DEBUG) //Printed to COM port via USB
-        {
-            //TICKS
-            //printf("\r\nTicks Left: %f Ticks Right: %f\n\r",(float)ticks_Left_preHandshake,(float)ticks_Right_preHandshake);
-            //printf("\r\n total ticks R: %f \n\r",total_ticks_r_preHandshake);
-            //printf("\r\n total ticks L:  %f \n\r",total_ticks_l_preHandshake);
 
-            //INPUT
-            //printf("\r\nuL: %f uR: %f\n\r",(float)leftU,(float)rightU);
-            
-            //SETPOINT
-            // printf("\r\n Setpoint: x %f y %f \n\r",(float)Setpoint.x, (float)Setpoint.y);
-            // printf("\r\n New Setpoint Command %d \n\r", new_setpoint_command);
-
-            //Distance Driven between setpoint commands
-            //printf("\r\n Distance driven : %f \n\r",(float)distanceDriven);
-            // printf("\r\n waitingcommand : %f \n\r",(float)waitingCommand);
-            // printf("\r\n turning: %f \n\r",(float)turning);
-            
-            //GLOBAL STATES
-            //double radToDeg = 180/3.14;
-            //printf("\r\n %f %f %f\n\r",gX_hat,(float)gY_hat,(float)radToDeg*gTheta_hat);
-            //printf("\r\n gXhat: %f gYhat: %f gTheta: %f\n\r",gX_hat,(float)gY_hat,(float)radToDeg*gTheta_hat);
-            
-            //GYRO VALUES
-            //printf("\r\n gyroX: %f gyroY: %f gyroZ: %f\n\r",(float)gyro_x,(float)gyro_y,(float)gyro_z);
-            //printf("\r\n test angle: %f\n\r",(float)gyroAngleZ);
-            //printf("\r\n%f %f %f\n\r",(float)gyro_x,(float)gyro_y,(float)gyro_z);
-            //printf("\r\n%f %f %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
-            //printf("\r\n accelX: %f accelY: %f accelZ: %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
-
-            //scope random value
-            //printf("\r\n Random value : %f \n\r",(float)time_since_startup);
-        }
-        #endif
-
-        if(!gHandshook){
-            //printf("\r\n Testing before handshake block\n\r");
-            counter +=1;
-            encoderTicks Ticks_preHandshake = encoder_get_ticks_since_last_time();
-            ticks_Left_preHandshake = -(double)Ticks_preHandshake.left;
-            ticks_Right_preHandshake = -(double)Ticks_preHandshake.right;
-            total_ticks_r_preHandshake = total_ticks_r_preHandshake+ticks_Right_preHandshake;
-            total_ticks_l_preHandshake = total_ticks_l_preHandshake+ticks_Left_preHandshake;
-
-            // 
-            if (newCommand){
-            turning = 1;
-            setpointX = xWaypoint;
-            setpointY = yWaypoint;
-            waitingCommand = 0;
-            newCommand = 0;
-            ddInitX = gX_hat;
-            ddInitY = gY_hat;
-            thetaIntegralError=0;  
-            }
-            //vTaskDelay(100);
-            
-        //  Displaying variables on OLED screen
-        // Keep in mind that this action may slow down the system affecting the time constant of the system.
-        // Use it mainly for debugging.
-        // sprintf(test, "X: %i Y: %i", (int)gX_hat, (int)gY_hat); 
-        // display_text_on_line(1, test);
-        // sprintf(test2, "Left: %f", (float)total_ticks_l_preHandshake); 
-        // display_text_on_line(2, test2);
-        // sprintf(test3, "Right: %f", (float)total_ticks_r_preHandshake);  
-        // display_text_on_line(3, test3);
-        // sprintf(test4, "Theta: %f", (float)gTheta_hat); 
-        // display_text_on_line(4, test4);
-            
-            
-            //MATLAB generated function
-
-            controller_api(setpointX, setpointY,  newCommand,
-                   &waitingCommand, ticks_Left_preHandshake, ticks_Right_preHandshake,
-                   &distanceDriven, &turning, xprev,
-                   yprev, thetaprev, ddInitX,
-                   ddInitY, delta_theta_gyro,
-                   &thetaIntegralError, delta_t,&thetaError,
-                   &gX_hat, &gY_hat, &gTheta_hat,
-                   &leftU, &rightU);
-
-         
-            
-
-            //SQUARE test MACRO
-            #if (TEST_TYPE==SQUARE)
-            {   
-                if(time_since_startup>1&&time_since_startup<10){
-                    if (xWaypoint !=xWaypoint1 || yWaypoint!=yWaypoint1)
-                    newCommand=1;
-                    xWaypoint=xWaypoint1;
-                    yWaypoint=yWaypoint1;
-                }
-
-                if (time_since_startup>10 && time_since_startup<20){
-                    
-                    if (xWaypoint !=xWaypoint2 || yWaypoint!=yWaypoint2){
-                        newCommand=1;
-                        xWaypoint=xWaypoint2;
-                        yWaypoint=yWaypoint2;
-                    }
-                }
-
-                if (time_since_startup>20 && time_since_startup<30){
-
-                    if (xWaypoint !=xWaypoint3 || yWaypoint!=yWaypoint3){
-                newCommand=1;    
-                xWaypoint=xWaypoint3;
-                yWaypoint=yWaypoint3;
-                    }
-                }
-
-                if (time_since_startup>30 && time_since_startup<40){
-                    if (xWaypoint !=xWaypoint4 || yWaypoint!=yWaypoint4){
-                        newCommand=1;
-                        xWaypoint=xWaypoint4;
-                        yWaypoint=yWaypoint4;
-                    }
-
-                }
-
-                if (time_since_startup>50){
-                        leftU  = 0;
-                        rightU = 0;
-                    }
-
-            }
-            #endif
-
-        //Square test log MACRO
-        #if (TEST_TYPE == SQUARE && LOG)
-        {
-        if(time_since_startup>50 && LOG && !log_guard){
-                    log_guard=1;
-                    int i;
-                    for(i = 0; i<squareTestInterval; ++i){
-                            if((float)fabs(xarrayPos[i])<10000 && (float)fabs(xarrayPos[i])<10000){
-                            printf("\r\n%i %i\n\r",(int)xarrayPos[i],(int)yarrayPos[i]);
-                            vTaskDelay(10);
-                            }
-                    }
-        }
-        }
-        #endif
-        
-
-
-
-        //LINE test LOG MACRO
-        #if(TEST_TYPE==LINE && LOG)
-        {
-            if(time_since_startup>20 && !log_guard){
-                log_guard = 1;
-                int i;
-                for(i = 0; i<lineTestInterval; ++i){
-                        if((int)fabs(xarrayPos[i])<10000 && (int)fabs(xarrayPos[i])<10000)
-                        {printf("\r\n%i %i\n\r",(int)xarrayPos[i],(int)yarrayPos[i]);}
-                        vTaskDelay(10);
-            }
-            
-        }
-        }
-        #endif
-
+        if (xQueueReceive(poseControllerQ, &Setpoint, 0) == pdTRUE) {
+            //New command has been received
+            newCommand=true;
         }
 
-        //collision logic
-        // if (checkForCollision() == true){ 
-        //         motor_brake();
-        //         robotMovement = moveStop;
-        //         xQueueSend(scanStatusQ,&robotMovement,0);
-        //         printf("\r\n Testing collision block\n\r");
-        //     leftU  =  0;
-        //     rightU = 0;   
-        //     }
+            
+        encoderTicks Ticks = encoder_get_ticks_since_last_time();
+        ticks_Left = -(double)Ticks.left;
+        ticks_Right = -(double)Ticks.right;
+        total_ticks_r = total_ticks_r+ticks_Right;
+        total_ticks_l = total_ticks_l+ticks_Left;
+
+        // 
+        if (newCommand){
+        turning = 1;
+        setpointX = Setpoint.x;
+        setpointY = Setpoint.y;
+        waitingCommand = 0;
+        newCommand = 0;
+        ddInitX = gX_hat;
+        ddInitY = gY_hat;
+        thetaIntegralError=0;  
+        }
+        //vTaskDelay(100);
+            
+            
+        //MATLAB generated function
+
+        controller_api(setpointX, setpointY,  newCommand,
+                &waitingCommand, ticks_Left, ticks_Right,
+                &distanceDriven, &turning, xprev,
+                yprev, thetaprev, ddInitX,
+                ddInitY, delta_theta_gyro,
+                &thetaIntegralError, delta_t,&thetaError,
+                &gX_hat, &gY_hat, &gTheta_hat,
+                &leftU, &rightU);
+
         
         // temp values of global states
         xprev     = gX_hat;
         yprev     = gY_hat;
         thetaprev = gTheta_hat;
 
-
-        // LOG MACRO logs position every 0.4 seconds
-        #if (LOG)
-        {   
-            log_loop_variable = log_loop_variable + delta_t;
-            if (log_loop_variable>0.4 && log_loop<150){
-                log_loop +=1;
-                xarrayPos[log_loop-1] = (int)xprev;
-                yarrayPos[log_loop-1] = (int)yprev;
-                log_loop_variable=log_loop_variable-0.4;
-            }
-
-        }
-        #endif
-
         uL = (int)leftU;
         uR = (int)rightU;
 
         vMotorMovementSwitch(uL,uR);
-        taskYIELD();        
+        taskYIELD();
 
-
-        if (gHandshook) {
-            printf("\r\n Testing handshake block\n\r");
-            encoderTicks Ticks = encoder_get_ticks_since_last_time();
-            ticks_Left = -(double)Ticks.left;
-            ticks_Right = -(double)Ticks.right;
-            if (xQueueReceive(poseControllerQ, &Setpoint, 0) == pdTRUE) {
-            NRF_LOG_INFO("\n\nNew setpoint: X = "NRF_LOG_FLOAT_MARKER", Y = "NRF_LOG_FLOAT_MARKER"\n\n",NRF_LOG_FLOAT(Setpoint.x), NRF_LOG_FLOAT(Setpoint.y));
-            printf("\r\n Testing queue block\n\r");
-            newCommand=true;
-            }
-
-            if (newCommand){
-                turning = 1;
-                setpointX = Setpoint.x*10;
-                setpointY = Setpoint.y*10;
-                waitingCommand = 0;
-                newCommand = 0;
-                ddInitX = gX_hat;
-                ddInitY = gY_hat;  
-            }
-        
-          controller_api(setpointX, setpointY,  newCommand,
-                   &waitingCommand, ticks_Left, ticks_Right,
-                   &distanceDriven, &turning, xprev,
-                   yprev, thetaprev, ddInitX,
-                   ddInitY, delta_theta_gyro,
-                   &thetaIntegralError, delta_t,&thetaError,
-                   &gX_hat, &gY_hat, &gTheta_hat,
-                   &leftU, &rightU);
-
-        // temp values of global states
-            xprev     = gX_hat;
-            yprev     = gY_hat;
-            thetaprev = gTheta_hat;
-
-
-            if (DEBUG){
-                //TICKS
-                // printf("\r\nTicks Left: %f Ticks Right: %f\n\r",(float)ticks_Left,(float)ticks_Right);
-                // printf("\r\n total ticks R: %f \n\r",total_ticks_r);
-                // printf("\r\n total ticks L:  %f \n\r",total_ticks_l);
-
-                //INPUT
-                // printf("\r\nuL: %i uR: %i\n\r",uL,uR);
-                
-                //SETPOINT
-                // printf("\r\n Setpoint: x %f y %f \n\r",(float)Setpoint.x, (float)Setpoint.y);
-                // printf("\r\n New Setpoint Command %d \n\r", new_setpoint_command);
-                
-                //GLOBAL STATES
-                // printf("\r\n gXhat: %f gYhat: %f gTheta: %f\n\r",(float)gX_hat,(float)gY_hat,(float)gTheta_hat);
-                
-                //Init Values
-                //printf("\r\n xHatInit: %f yHatInit: %f thetaHatInit: %f\n\r",(float)xHatInit,(float)yHatInit,(float)thetaHatInit);
-                
-                //Gyro Values
-                // printf("\r\n gyroX: %f gyroY: %f gyroZ: %f\n\r",(float)gyro_x,(float)gyro_y,(float)gyro_z);
-                // printf("\r\n accelX: %f accelY: %f accelZ: %f\n\r",(float)accel_x,(float)accel_y,(float)accel_z);
-            }
-
-
-
-            //vTaskDelay(100);
-           
-            // Cast to int before sending to motor
-            int uR = (int)rightU;
-            int uL = (int)leftU;
-
-
-			xSemaphoreTake(xPoseMutex, 15);
-            set_position_estimate_heading(gTheta_hat);					
-            set_position_estimate_x(gX_hat/1000); // convert from mm to m
-            set_position_estimate_y(gY_hat/1000); // convert from mm to m
-            xSemaphoreGive(xPoseMutex);
-            
-            if (checkForCollision() == true){ 
+        xSemaphoreTake(xPoseMutex, 15);
+        set_position_estimate_heading(gTheta_hat);					
+        set_position_estimate_x(gX_hat/1000); // convert from mm to m
+        set_position_estimate_y(gY_hat/1000); // convert from mm to m
+        xSemaphoreGive(xPoseMutex);
+        taskYIELD();
+        if (checkForCollision() == true){ 
                 motor_brake();
                 robotMovement = moveStop;
                 xQueueSend(scanStatusQ,&robotMovement,0);
                 printf("\r\n Testing collision block\n\r");   
-            }
-            else{
-                robotMovement = moveForward; // Lowest value for a movement. To stop scanning
-                xQueueSend(scanStatusQ,&robotMovement,0);
-                vMotorMovementSwitch(uL,uR);
-                taskYIELD();
-                if(uL == 0 && uR == 0){
-                    robotMovement = moveStop;
-                    motor_brake();
-                    xQueueSend(scanStatusQ,&robotMovement,0);
-                    // re-initializing estimates to avoid drifting
-/*                     xSemaphoreTake(xPoseMutex, 15);
-			        gX_hat = (Setpoint.x)*10; // convert from cm to mm
-                    set_position_estimate_x(gX_hat/1000); // convert from mm to m
-			        gY_hat = (Setpoint.y)*10; // convert from cm to mm
-                    set_position_estimate_y(gY_hat/1000); // convert from mm to m
-                    xSemaphoreGive(xPoseMutex);   */ 
-                    // break;
-                    NRF_LOG_INFO("\n\noutput for both motors is zero\n\n");
-                    // active_command_exists = false;
-                }
-            }
-            // if ((Setpoint.x - X_hat) < 0.02) active_command_exists = false;
-        } //endif (gHandshook)
+        }
+
+        else{
+            robotMovement = moveForward; // Lowest value for a movement. To stop scanning
+            xQueueSend(scanStatusQ,&robotMovement,0);
+        }
+
     }
 }
-    // vTaskPrioritySet(handle_api, 1);
 
 
 

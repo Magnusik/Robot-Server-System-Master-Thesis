@@ -162,10 +162,11 @@ _build/nrf52840_xxaa/main.c.o: main.c \
  ../../modules/nrfx/hal/nrf_twi.h \
  ../../components/libraries/queue/nrf_queue.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\math.h \
- software/ControllerApiTask.h ble_communication/arq.h \
- ble_communication/bluetooth.h ble_communication/network.h \
- ble_communication/server_communication.h drivers/defines.h \
- config/robot_config.h ../../modules/nrfx/drivers/include/nrfx_saadc.h \
+ software/ControllerApiTask.h software/ControllerApiTesterTask.h \
+ ble_communication/arq.h ble_communication/bluetooth.h \
+ ble_communication/network.h ble_communication/server_communication.h \
+ drivers/defines.h config/robot_config.h \
+ ../../modules/nrfx/drivers/include/nrfx_saadc.h \
  ../../modules/nrfx/hal/nrf_saadc.h ble_communication/simple_protocol.h \
  software/DisplayTask.h drivers/display.h \
  ../../components/libraries/gfx/nrf_lcd.h \
@@ -525,6 +526,8 @@ c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-ea
 c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\6\ 2017-q2-update\arm-none-eabi\include\math.h:
 
 software/ControllerApiTask.h:
+
+software/ControllerApiTesterTask.h:
 
 ble_communication/arq.h:
 

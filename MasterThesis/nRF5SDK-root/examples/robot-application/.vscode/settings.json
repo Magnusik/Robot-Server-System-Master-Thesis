@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "ir.h": "c",
+        "server_communication.h": "c",
+        "globals.h": "c",
+        "motor.h": "c",
+        "encoder.h": "c",
+        "positionestimate.h": "c"
+    }
+}

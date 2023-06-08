@@ -47,7 +47,7 @@
 
 // Task containing Matlab generated C code
 #include "ControllerApiTask.h"
-
+#include "ControllerApiTesterTask.h"
 
 //Communication
 #include "arq.h"
