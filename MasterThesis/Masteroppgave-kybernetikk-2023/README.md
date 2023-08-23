@@ -10,7 +10,8 @@ The robot-application code is made by students at NTNU Gløshaugen.
 ``robot-application`` is a folder with all the necessary software to run the MATLAB-robot. This includes student made motor drivers, communication modules and the MATLAB generated function "controllerApi".
 
 ``matlab-files`` contains the MATLAB files and the MATLAB generated function controllerApi.
- 
+
+``Magnus Isdal Kolbeinsen master`` contains a report about the end result of the code. 
 ## Bugs and Known Issues
 * Connection with Java Server is known to be a bit unstable.
 
