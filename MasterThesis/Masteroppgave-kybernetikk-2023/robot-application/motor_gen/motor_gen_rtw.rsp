@@ -1,0 +1,3 @@
+motor_gen.obj
+motor_gen_initialize.obj
+motor_gen_terminate.obj
